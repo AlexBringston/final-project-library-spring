@@ -11,16 +11,16 @@ public class CustomComparators {
 
         return (o1, o2) -> {
             Author author1 = o1.getAuthors()
-                    .stream().sorted()
-                    .findFirst()
+                    .stream().min(Comparator.comparing(Author::getSurname))
                     .orElse(new Author());
 
             Author author2 = o2.getAuthors()
-                    .stream().sorted()
-                    .findFirst()
+                    .stream().min(Comparator.comparing(Author::getSurname))
                     .orElse(new Author());
 
             return author1.getSurname().compareTo(author2.getName());
         };
     }
+
+
 }

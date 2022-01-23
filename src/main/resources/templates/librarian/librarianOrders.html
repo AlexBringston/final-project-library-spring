@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>E-library</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800;900&family=Vollkorn:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+	<link th:replace="/common/fragments :: css">
+	<link th:replace="/common/fragments :: image"/>
+</head>
+<body class="body">
+
+<div th:replace="common/fragments :: header"></div>
+	<section class="content">
+		<div class="container">
+			<div class="books-wrap">
+				<div th:replace="librarian/side-bar :: side-bar"></div>
+				<div class="go-to">
+					<p>Замовлення</p>
+					<div class="books-list">
+						<div class="book-info" th:each="request: ${requests}">
+							<div class="accordion">
+								<p th:text="${request.getBook().getName()}">"Шестірка Воронів"</p>
+								<div class="accordion-btns">
+									<form action="">
+										<button type="submit" value="Видати (А)">Видати (А)</button>
+
+										<button type="submit" value="Видати (ЧЗ)">Видати (ЧЗ)</button>
+
+										<button type="submit" value="Відмовити">Відмовити</button>
+									</form>
+								</div>
+							</div>
+							<div class="panel">
+								<p
+										th:text="|Ordered by: ${request.getUser().getName()} ${request.getUser().getSurname()}|">Замовник: Олексій Копійка</p>
+							</div>
+						</div>
+						<div class="book-info">
+							<div class="accordion">
+								<p>"Шестірка Воронів"</p>
+								<div class="accordion-btns">
+									<form action="">
+										<button type="submit" value="Видати (А)">Видати (А)</button>
+
+										<button type="submit" value="Видати (ЧЗ)">Видати (ЧЗ)</button>
+
+										<button type="submit" value="Відмовити">Відмовити</button>
+									</form>
+								</div>
+							</div>
+							<div class="panel">
+								<p>Замовник: Олексій Копійка</p>
+							</div>
+						</div>
+						<div class="book-info">
+							<div class="accordion">
+								<p>"Шестірка Воронів"</p>
+								<div class="accordion-btns">
+									<form action="">
+										<button type="submit" value="Видати (А)">Видати (А)</button>
+
+										<button type="submit" value="Видати (ЧЗ)">Видати (ЧЗ)</button>
+
+										<button type="submit" value="Відмовити">Відмовити</button>
+									</form>
+								</div>
+							</div>
+							<div class="panel">
+								<p>Замовник: Олексій Копійка</p>
+							</div>
+						</div>
+						<div class="book-info">
+							<div class="accordion">
+								<p>"Шестірка Воронів"</p>
+								<div class="accordion-btns">
+									<form action="">
+										<button type="submit" value="Видати (А)">Видати (А)</button>
+
+										<button type="submit" value="Видати (ЧЗ)">Видати (ЧЗ)</button>
+
+										<button type="submit" value="Відмовити">Відмовити</button>
+									</form>
+								</div>
+							</div>
+							<div class="panel">
+								<p>Замовник: Олексій Копійка</p>
+							</div>
+						</div>
+						<div class="book-info">
+							<div class="accordion">
+								<p>"Шестірка Воронів"</p>
+								<div class="accordion-btns">
+									<form action="">
+										<button type="submit" value="Видати (А)">Видати (А)</button>
+
+										<button type="submit" value="Видати (ЧЗ)">Видати (ЧЗ)</button>
+
+										<button type="submit" value="Відмовити">Відмовити</button>
+									</form>
+								</div>
+							</div>
+							<div class="panel">
+								<p>Замовник: Олексій Копійка</p>
+							</div>
+						</div>
+						<div class="book-info">
+							<div class="accordion">
+								<p>"Шестірка Воронів"</p>
+								<div class="accordion-btns">
+									<form action="">
+										<button type="submit" value="Видати (А)">Видати (А)</button>
+
+										<button type="submit" value="Видати (ЧЗ)">Видати (ЧЗ)</button>
+
+										<button type="submit" value="Відмовити">Відмовити</button>
+									</form>
+								</div>
+							</div>
+							<div class="panel">
+								<p>Замовник: Олексій Копійка</p>
+							</div>
+						</div>
+						<div class="book-info">
+							<div class="accordion">
+								<p>"Шестірка Воронів"</p>
+								<div class="accordion-btns">
+									<form action="">
+										<button type="submit" value="Видати (А)">Видати (А)</button>
+
+										<button type="submit" value="Видати (ЧЗ)">Видати (ЧЗ)</button>
+
+										<button type="submit" value="Відмовити">Відмовити</button>
+									</form>
+								</div>
+							</div>
+							<div class="panel">
+								<p>Замовник: Олексій Копійка</p>
+							</div>
+						</div>
+						<div class="book-info">
+							<div class="accordion">
+								<p>"Шестірка Воронів"</p>
+								<div class="accordion-btns">
+									<form action="">
+										<button type="submit" value="Видати (А)">Видати (А)</button>
+
+										<button type="submit" value="Видати (ЧЗ)">Видати (ЧЗ)</button>
+
+										<button type="submit" value="Відмовити">Відмовити</button>
+									</form>
+								</div>
+							</div>
+							<div class="panel">
+								<p>Замовник: Олексій Копійка</p>
+							</div>
+						</div>
+					</div>
+					<form class="pagination">
+						<button><<</button>
+						<button><</button>
+						<button>></button>
+						<button>>></button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+<div th:replace="common/fragments :: footer"></div>
+	<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

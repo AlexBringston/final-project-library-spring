@@ -1,8 +1,6 @@
 package ua.training.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -10,7 +8,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Entity(name = "publishers")
 public class Publisher {
 
     @Id
@@ -20,7 +18,9 @@ public class Publisher {
     private String name;
 
     //todo delete
-    @OneToMany(mappedBy = "books")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "publisher")
     public List<Book> books;
 
 }

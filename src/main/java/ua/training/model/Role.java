@@ -6,10 +6,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Data
-@Entity
+@Entity(name = "roles")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role implements GrantedAuthority {
@@ -19,10 +18,6 @@ public class Role implements GrantedAuthority {
     private Long id;
 
     private String name;
-
-    @Transient
-    @OneToMany(mappedBy = "users")
-    private Set<User> users;
 
     @Override
     public String getAuthority() {

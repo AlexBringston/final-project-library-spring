@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-library</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800;900&family=Vollkorn:wght@400;600;700;800;900&display=swap"
+          rel="stylesheet">
+    <link th:replace="/common/fragments :: css"/>
+    <link th:replace="/common/fragments :: image"/>
+</head>
+<body class="body">
+
+
+<div th:replace="common/fragments :: header"></div>
+<section class="content">
+    <div class="container">
+        <div class="books-wrap log">
+            <div class="go-to log">
+                <p>Зареєструватися</p>
+                <form action="/register" method="post" th:object="${user}">
+                    <div class="authorize-form reg">
+                        <label for="reg-name">Введіть ім'я:</label>
+                        <input id="reg-name" name="name" type="text">
+                        <label for="reg-surname">Введіть прізвище:</label>
+                        <input id="reg-surname" name="surname" type="text">
+                        <label for="reg-login">Введіть логін:</label>
+                        <input id="reg-login" name="username" type="text">
+                        <label for="reg-password">Введіть пароль:</label>
+                        <input id="reg-password" name="password" type="password">
+                        <label for="reg-date">Введіть дату народження:</label>
+                        <input id="reg-date" name="birthDate" type="date">
+                        <input type="submit" value="Register">
+                        <p>Вже маєте акаунт? <a href="#">Увійти</a></p>
+                    </div>
+                </form>
+            </div>
+            <div class="error-p">
+                <p><span>Помилка: </span>введено невірний пароль</p>
+                <p><span>Помилка: </span>введено невірний пароль</p>
+            </div>
+        </div>
+    </div>
+</section>
+<div th:replace="common/fragments :: footer"></div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

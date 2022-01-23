@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>E-library</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800;900&family=Vollkorn:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+	<link th:replace="/common/fragments :: css"/>
+	<link th:replace="/common/fragments :: image"/>
+</head>
+<body class="body">
+<div class="topper" sec:authorize="isAuthenticated()">
+	<form class="search" method="get" id="form1" action="/reader/search">
+		<input type="text" name="query" th:value="${bookSearchDTO.getQuery()}" placeholder="Пошук">
+		<input type="submit" value="">
+	</form>
+</div>
+<form th:attr="id=${#authorization.expression('isAuthenticated()') ? '' : 'form1'}">
+</form>
+
+<header th:replace="common/fragments :: header"></header>
+
+	<section class="content">
+		<div class="container">
+			<div class="books-wrap">
+				<div class="side-bar">
+					<div class="book-sort">
+						<p>Cортувати</p>
+						<select class="localization sort" name="sortField" form="form1">
+							<option th:selected="${bookSearchDTO.getSortField().equals('name')}" value="name">Назва
+							</option>
+							<option th:selected="${bookSearchDTO.getSortField().equals('mainAuthor')}"
+									value="mainAuthor">Автор
+							</option>
+							<option th:selected="${bookSearchDTO.getSortField().equals('publisher.name')}"
+									value="publisher.name">
+								Видання</option>
+							<option
+									th:selected="${bookSearchDTO.getSortField().equals('publishedAt')} "value="publishedAt">Дата	видання</option>
+						</select>
+						<select class="localization sort" name="sortDirection" form="form1">
+							<option th:selected="${bookSearchDTO.sortDirection.equals('ASC')}" value="ASC">За
+								зростанням</option>
+							<option th:selected="${bookSearchDTO.sortDirection.equals('DESC')}" value="DESC">За
+								спаданням</option>
+						</select>
+						<input type="submit" form="form1" value="Застосувати">
+					</div>
+				</div>
+				<div class="go-to">
+
+					<p>Електронний каталог</p>
+					<div class="books-catalog">
+						<div class="book" th:classappend="${#authorization.expression('isAuthenticated()') ? '' : 'order-disabled'}"
+							th:each="book : ${booksDTO.getBooks()}">
+							<div class="book-cover">
+								<img th:src="${book.getImgUrl()}" alt=""/>
+							</div>
+							<div class="book-NAP">
+								<p th:text="${book.getName()}">"Шестірка воронів"</p>
+								<p th:text="|${booksDTO.getMainAuthors()[bookStat.index].getName()} ${booksDTO.getMainAuthors()[bookStat.index].getSurname()}|">Лі Бардуго</p>
+								<p th:text="${book.getPublishedAt().getYear()}">2021</p>
+							</div>
+							<form method="post" th:action="@{/reader/orderBook/{id}(id = ${book.getId()})}" sec:authorize="hasRole('ROLE_READER')">
+								<button type="submit">Order</button>
+							</form>
+
+						</div>
+
+					</div>
+					<div class="pagination">
+						<button th:if="${booksDTO.getBooks().totalPages!=1 && !booksDTO.getBooks().isFirst()}"
+								form="form1"
+								type="submit" name="pageNumber" value="0" th:text="'<<'"> TEXT </button>
+						<button th:if="${booksDTO.getBooks().hasPrevious()}" type="submit" name="pageNumber" form="form1"
+								th:value="${booksDTO.getBooks().previousPageable().getPageNumber()}" th:text="'<'">
+							TEXT</button>
+						<button th:if="${booksDTO.getBooks().hasNext()}" type="submit" name="pageNumber" form="form1"
+								th:value="${booksDTO.getBooks().nextPageable().getPageNumber()}" th:text="'>'">TEXT
+						</button>
+						<button th:if="${booksDTO.getBooks().totalPages!=1 && !booksDTO.getBooks().isLast()}"
+								type="submit" name="pageNumber" form="form1"
+								th:value="${booksDTO.getBooks().totalPages - 1}" th:text="'>>'" >TEXT</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+<div th:replace="common/fragments :: footer"></div>
+</body>
+</html>

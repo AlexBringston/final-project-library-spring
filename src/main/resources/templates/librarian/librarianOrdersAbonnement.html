@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>E-library</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800;900&family=Vollkorn:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+	<link th:replace="/common/fragments :: css">
+	<link th:replace="/common/fragments :: image"/>
+</head>
+<body class="body">
+
+
+<div th:replace="common/fragments :: header"></div>
+	<section class="content">
+		<div class="container">
+			<div class="books-wrap">
+				<div th:replace="librarian/side-bar :: side-bar"></div>
+				<div class="go-to give log">
+					<div class="give-form">
+						<p>Видача на абонемент</p>
+						<div class="give-info">
+							<p>Книга: "Шестірка воронів"</p>
+							<p>Читач: "Олексій Копійка"</p>
+						</div>
+						<div class="authorize-form reg give">
+							<label for="date">Введіть дату повернення книги:</label>
+							<input id="date" type="date">
+							<label for="penalty">Введіть суму штрафу:</label>
+							<input id="penalty" type="number" min="0">
+							<input type="submit" value="Видати">
+						</div>
+					</div>
+					<div class="error-p">
+						<p><span>Помилка: </span>введено невірний пароль</p>
+						<p><span>Помилка: </span>введено невірний пароль</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+<div th:replace="common/fragments :: footer"></div>
+	<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

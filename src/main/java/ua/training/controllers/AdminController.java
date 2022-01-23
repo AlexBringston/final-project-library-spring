@@ -1,6 +1,10 @@
 package ua.training.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,6 +13,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.training.model.Book;
 import ua.training.model.User;
 import ua.training.model.dto.input.BookPublisherDTO;
+import ua.training.model.dto.input.SearchUserDTO;
+import ua.training.model.dto.output.UserDTO;
 import ua.training.services.BookService;
 import ua.training.services.UserService;
 
@@ -16,6 +22,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/admin")
+@SessionAttributes("searchUserDTO")
 public class AdminController {
 
     private final BookService bookService;
@@ -27,15 +34,20 @@ public class AdminController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public String getAdminPage() {
-        return "admin";
+        return "/admin/admin";
+    }
+
+    @GetMapping("/showBooks")
+    public String showAllBooks() {
+        return "/admin/adminBooks";
     }
 
     @GetMapping("/addBook")
     public String addBookForm(@ModelAttribute("bookPublisherDTO") BookPublisherDTO bookPublisherDTO, Model model) {
         model.addAttribute("bookPublisherDTO", bookPublisherDTO);
-        return "addBook";
+        return "/admin/adminNewBook";
     }
 
     @PostMapping("/addDetail")
@@ -51,13 +63,12 @@ public class AdminController {
     @PostMapping("/addBook")
     public String addBook(@Valid @ModelAttribute("bookPublisherDTO") BookPublisherDTO bookPublisherDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "addBook";
+            return "/admin/adminNewBook";
         }
 
         System.out.println(bookPublisherDTO.getBook());
         System.out.println(bookPublisherDTO.getPublisherId());
         System.out.println(bookPublisherDTO.getAuthorId());
-        System.out.println(bookPublisherDTO.getQuantity());
         //bookService.saveBook(book);
         return "redirect:/admin";
     }
@@ -78,7 +89,7 @@ public class AdminController {
     @GetMapping("/updateBook")
     public String updateBookForm(@ModelAttribute("bookPublisherDTO") BookPublisherDTO bookPublisherDTO, Model model) {
         model.addAttribute("bookPublisherDTO", bookPublisherDTO);
-        return "updateBook";
+        return "/admin/adminEditBook";
     }
 
     @PutMapping("/updateBook")
@@ -87,6 +98,11 @@ public class AdminController {
 
         bookService.changeBookInfo(bookPublisherDTO, deleteFlag);
         return "redirect:/admin";
+    }
+
+    @GetMapping("/showLibrarians")
+    public String showAllLibrarians() {
+        return "/admin/adminLibrarians";
     }
 
     @PutMapping("/createLibrarian")
@@ -101,7 +117,31 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @PutMapping("/blockUser")
+    @GetMapping("/showUsers")
+    public String showAllUsers(@ModelAttribute("searchUserDTO") SearchUserDTO searchUserDTO,
+                               Model model) {
+        UserDTO usersOrderedByName = userService.findUsersOrderedByName(searchUserDTO);
+
+        model.addAttribute("userDTO", usersOrderedByName);
+        return "/admin/adminUsers";
+    }
+
+    @PostMapping("/updateUserStatus/{id}")
+    public String updateUserStatus(@ModelAttribute("searchUserDTO") SearchUserDTO searchUserDTO,
+                                   @RequestParam("action") String action,
+                                   @PathVariable("id") Long id,
+                                   Model model) {
+        System.out.println("USER ID " + id);
+        if (action.equals("block")) {
+            userService.blockUser(id);
+        }
+        if (action.equals("unblock")) {
+            userService.unblockUser(id);
+        }
+        model.addAttribute("userDTO", userService.findUsersOrderedByName(searchUserDTO));
+        return "/admin/adminUsers";
+    }
+    /*@PutMapping("/blockUser")
     public String blockUser(@ModelAttribute("user")User user) {
         userService.blockUser(user);
         return "redirect:/admin";
@@ -111,5 +151,11 @@ public class AdminController {
     public String unblockUser(@ModelAttribute("user")User user) {
         userService.unblockUser(user);
         return "redirect:/admin";
+    }*/
+
+    @ModelAttribute("searchUserDTO")
+    public SearchUserDTO searchUserDTO() {
+        return new SearchUserDTO();
     }
+
 }

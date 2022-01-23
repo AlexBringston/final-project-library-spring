@@ -1,6 +1,7 @@
 package ua.training.model;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -23,6 +24,11 @@ public class User implements UserDetails {
     private String surname;
     private String username;
     private String password;
+
+    @Column(name = "is_account_non_blocked")
+    private boolean isAccountNonLocked = true;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
@@ -31,9 +37,6 @@ public class User implements UserDetails {
 
     @Transient
     private final boolean isAccountNonExpired = true;
-
-    @Column(name = "is_account_non_locked")
-    private boolean isAccountNonLocked = true;
 
     @Transient
     private final boolean isCredentialsNonExpired = true;

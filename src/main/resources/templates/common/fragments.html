@@ -1,0 +1,46 @@
+<link th:fragment="css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+<link th:fragment="image" rel="shortcut icon" th:href="@{/img/favicon.png}" type="image/png"/>
+
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<div th:fragment="topper" class="topper" sec:authorize="isAuthenticated()">
+    <form class="search" method="get" id="form1" action="/reader/search">
+        <input type="text" name="query" placeholder="Пошук">
+        <input type="submit" value="">
+    </form>
+</div>
+
+
+<header th:fragment="header" class="header">
+    <div class="container">
+        <div class="nav">
+            <div class="logo-locale">
+                <span class="logo"><a th:href="@{/}"><img th:src="@{/img/logo.svg}" alt=""/></a> </span>
+                <form class="select">
+                    <input type="submit" name="locale" action="" value="UA">
+                </form>
+            </div>
+            <ul>
+                <li><a sec:authorize="hasRole('ROLE_READER')" th:href="@{/reader/getAbonnement}">Abonnement</a></li>
+                <li><a th:href="@{/account}"><div sec:authorize="isAuthenticated()"
+                                     th:text ="${#authentication.getPrincipal().getName()}">TEXT
+                </div></a></li>
+                <li><a sec:authorize="isAuthenticated()"
+                       th:href="@{/logout}"><img th:src="@{/img/user.png}" alt=""/></a></li>
+                <li><a sec:authorize="!isAuthenticated()"
+                       th:href="@{/login}"><img th:src="@{/img/user.png}" alt=""/></a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<footer th:fragment="footer" class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <p>2022</p>
+        </div>
+    </div>
+</footer>
+
+</html>

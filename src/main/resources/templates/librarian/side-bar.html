@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<div th:fragment="side-bar" class="side-bar">
+    <div class="book-sort">
+        <p>Опції</p>
+        <div class="admin-menu">
+            <a th:href="@{/librarian/orders}">Замовлення</a>
+            <a th:href="@{/librarian/readers}">Читачі</a>
+        </div>
+    </div>
+</div>
+</html>

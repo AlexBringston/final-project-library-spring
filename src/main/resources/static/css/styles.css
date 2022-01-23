@@ -1,0 +1,777 @@
+/*Обнуление*/
+*{
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+*,*:before,*:after{
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+:focus,:active{outline: none;}
+a:focus,a:active{outline: none;}
+
+nav,footer,header,aside{display: block;}
+
+html,body{
+	height: 100%;
+	width: 100%;
+	font-size: 100%;
+	line-height: 1;
+	font-size: 18px;
+	-ms-text-size-adjust: 100%;
+	-moz-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+}
+input,button,textarea, select, option{font-family:inherit;}
+
+input::-ms-clear{display: none;}
+select{
+	margin: 0;
+}
+button, input[type="submit"]{cursor: pointer;}
+button::-moz-focus-inner {padding:0;border:0;}
+a, a:visited{text-decoration: none;}
+a:hover{text-decoration: none;}
+ul li{list-style: none;}
+img{vertical-align: top;}
+
+h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
+/*--------------------*/
+
+.container{
+	width: 1170px;
+	margin: 0 auto;
+	padding: 0 15px 0 15px;
+}
+.body{
+	display: flex;
+	flex-direction: column;
+	font-size: 24px;
+	background: url('../img/mainBg.jpg') center/cover no-repeat fixed;
+	font-family: Montserrat;
+}
+input[type="text"], input[type="number"], input[type="email"]{
+	height: 42px;
+	border: 1px solid white;
+	padding: 0 0 0 10px;
+}
+
+/*---Header---*/
+.header{
+	display: flex;
+	flex-direction: column;
+	flex: 0 0 60px;
+	background: #261002;
+	box-shadow: 0px 7px 9px rgba(0, 0, 0, 0.45);
+	position: relative;
+	z-index: 2;
+}
+.topper{
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	position: sticky;
+	top: 0px;
+	z-index: 3;
+}
+.nav{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 60px;
+	font-family: Vollkorn;
+
+}
+.nav ul{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.nav li a{
+	font-size: 18px;
+	font-weight: bold;
+	color: white;
+	transition: all 0.5s ease;
+}
+.nav li{
+	margin: 0 15px 0 0;
+}
+.nav li:last-child{
+	margin: 0;
+}
+li img{
+	width: 40px;
+}
+.logo{
+	height: 30px;
+}
+.logo img{
+	height: 100%;
+}
+.logo-locale{
+	display: flex;
+	align-items: center;
+}
+.select{
+	display: flex;
+	justify-content: flex-start;
+}
+.select select option{
+	background: #79350A;
+}
+.localization{
+	width: 160px;
+	height: 35px;
+	border: 1px solid white;
+	padding: 0 10px 0 10px;
+	background: none;
+	color: white;
+	font-size: 20px;
+	font-weight: bold;
+}
+.select input[type="submit"]{
+	width: 38px;
+	height: 38px;
+	font-size: 18px;
+	border: none;
+	background: none;
+	color: white;
+	font-weight: bold;
+	transition: all 0.5s ease;
+}
+.search{
+	display: flex;
+	width: 100%;
+	justify-content: flex-start;
+	font-weight: bold;
+}
+.search input, .select input{
+	height: 40px;
+}
+.search input[type="text"]{
+	width: 100%;
+	font-size: 16px;
+	text-align: center;
+	color: white;
+	border: 1px solid white;
+	background: #261002;
+	font-weight: bold;
+}
+.search input[type="submit"]{
+	width: 40px;
+	border: 1px solid white;
+	background: url('../img/search.jpg') center / cover;
+	transition: all 0.5s ease;
+}
+.search input::-webkit-input-placeholder { color: white; }
+.search input::-moz-placeholder { color: white; }
+/*--------------------*/
+
+/*---Main Content---*/
+.content{
+	display: flex;
+	flex: 1 1 auto;
+}
+.content .container{
+	background: rgba(255, 228, 196, 1);
+	height: 100%;
+}
+.books-wrap{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	align-items: flex-start;
+}
+.content-wrap{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	align-items: flex-start;
+}
+.side-bar{
+	display: flex;
+	width: 20%;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 0 0 0 15px;
+	background: #79350A;
+	margin: 0 15px 0 -15px;
+	height: 100%;
+}
+.go-to{
+	display: flex;
+	width: 80%;
+	flex-direction: column;
+	align-items: center;
+}
+.go-to p{
+	margin: 50px 0 30px 0;
+	font-family: Vollkorn;
+	font-weight: bold;
+	font-size: 45px;
+	line-height: 100%;
+	color: #261002;
+}
+
+.book-sort{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	justify-content: flex-end;
+	margin: 125px 0 0 0;
+}
+.book-sort p{
+	font-family: Vollkorn;
+	color: white;
+	font-weight: bold;
+	margin: 0 0 10px 0;
+}
+.localization.sort{
+	width: 200px;
+	height: 30px;
+	border: 1px solid #261002;
+	padding: 0 10px 0 10px;
+	background: white;
+	color: #261002;
+	font-size: 14px;
+	font-weight: normal;
+	margin:0 0 15px 0;
+}
+.book-sort input[type="submit"]{
+	width: 200px;
+	height: 30px;
+	font-size: 14px;
+	border: 1px solid #261002;
+	background: white;
+	color: #261002;
+	font-weight: bold;
+	transition: all 0.5s ease;
+}
+.books-catalog{
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+	justify-content: space-between;
+}
+.book{
+	width: 220px;
+	/*height: 500px;*/
+	display: flex;
+	flex-direction: column;
+	margin: 0 0 15px 0;
+	box-shadow: 7px 7px 9px rgba(0, 0, 0, 0.25);
+	transition: all 0.5s ease;
+}
+.book-NAP{
+	/*height: 100px;*/
+	padding: 10px;
+	background: white;
+	border: 1px solid #261002;
+	border-top: none;
+	flex: 1 1 auto;
+}
+.book-NAP p{
+	width: 100%;
+	font-family: Montserrat;
+	font-size: 14px;
+	color: black;
+	font-weight: normal;
+	text-align: left;
+	margin: 0 0 10px 0;
+}
+.book-NAP p:first-child{
+	font-weight: bold;
+	text-align: center;
+}
+.book-NAP p:last-child{
+	margin: 0;
+}
+.book-cover{
+	width: 100%;
+	height: 347px;
+	overflow: hidden;
+	/*background: url("../img/book.png") no-repeat 0 0 / cover;*/
+	border: 1px solid #261002;
+}
+.book-cover img{
+	max-width: 100%;
+	height: 100%;
+}
+.book a, .book button{
+	width: 100%;
+	height: 53px;
+	line-height: 100%;
+	padding: 15px;
+	background: #261002;
+	border: 1px solid #261002;
+	font-weight: bold;
+	font-size: 20px;
+	color: white;
+	text-align: center;
+	transition: all 0.5s ease;
+}
+
+.book.order-disabled a ,.book.order-disabled button{
+	display: none;
+}
+.pagination{
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	margin: 15px 0 30px 0;
+}
+.pagination button{
+	width: 40px;
+	height: 40px;
+	color: #261002;
+	font-size: 24px;
+	background: #FFFFFF;
+	border: 1px solid #261002;
+	font-family: 'Vollkorn';
+	font-weight: 700;
+	margin: 0 15px 0 0;
+	transition: all 0.5s ease;
+}
+.pagination button:last-child{
+	margin: 0;
+}
+/*--------------------*/
+
+/*---Admin-Page-Books---*/
+.admin-menu{
+	display: flex;
+	flex-direction: column;
+}
+.admin-menu a{
+	font-size: 18px;
+	color: white;
+	margin-bottom: 10px;
+	font-weight: normal;
+}
+.admin-menu a:first-child{
+	margin-top: 5px;
+}
+.admin-menu a:last-child{
+	margin: 0;
+}
+.add-book{
+	display: flex;
+	width: 100%;
+}
+.add-book a{
+	font-size: 28px;
+	font-family: Vollkorn;
+	color: #261002;
+	text-align: left;
+	margin: 0 0 15px 0;
+	font-weight: 700;
+}
+.books-list{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+.book-info{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	border-bottom: 1px solid #261002;
+}
+.book-info:last-child{
+	border-bottom: none;
+}
+.accordion{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	/*margin: 0 0 20px 0;*/
+	padding: 10px 10px 10px 10px;
+	cursor: pointer;
+	transition: all 0.5s ease;
+}
+.accordion-btns{
+	display: flex;
+}
+.accordion.active, .accordion:hover{
+	font-weight: 900;
+}
+.accordion p{
+	font-size: 20px;
+	color: black;
+	font-weight: 600;
+	margin: 0;
+}
+.accordion-btns button{
+	font-size: 16px;
+	color: black;
+	font-weight: 600;
+	margin: 0;
+	background: none;
+	border: none;
+	margin: 0 0 0 20px;
+}
+.accordion.active{
+	border-top: 1px solid #261002;
+	border-right: 1px solid #261002;
+	border-left: 1px solid #261002;
+	background: white;
+}
+.panel{
+	background-color: white;
+	display: none;
+	font-size: 14px;
+	padding: 0 10px 0 10px;
+	border: 1px solid #261002;
+}
+.panel p{
+	font-family: Montserrat;
+	font-size: 16px;
+	color: black;
+	font-weight: normal;
+	margin: 0;
+	padding: 0 0 10px 0;
+}
+.panel p:first-child{
+	padding-top: 10px;
+}
+.panel.show{
+	display: block;
+}
+/*--------------------*/
+
+/*---Admin-Page-New Book---*/
+.new-book{
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	width: 100%;
+}
+.new-book input{
+	width: 100%;
+	height: 30px;
+	font-size: 16px;
+	background: white;
+	border: 1px solid #261002;
+	margin: 0 0 10px 0;
+	padding: 0 0 0 10px;
+}
+.new-book input[type="submit"]{
+	font-weight: bold;
+}
+.new-book-authors{
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
+.new-book-authors input{
+	width: 95%;
+}
+.new-book-authors input[type="submit"]{
+	width: 5%;
+}
+/*--------------------*/
+
+/*---Admin-Page-Librarians---*/
+.librarians-list{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	/*margin: 0 0 20px 0;*/
+	padding: 10px 10px 10px 10px;
+	cursor: pointer;
+	transition: all 0.5s ease;
+}
+.librarians-list p{
+	font-size: 20px;
+	color: black;
+	font-weight: 600;
+	margin: 0;
+}
+/*--------------------*/
+
+/*---Admin-Page-New Librarian---*/
+.new-book label{
+	width: 100%;
+	font-size: 16px;
+	margin: 0 0 5px 0;
+}
+/*--------------------*/
+
+/*---Admin-Page-Users---*/
+.book-info.blocked-user p{
+	color: rgba(0, 0, 0, 0.5);
+}
+/*--------------------*/
+
+/*---Admin-Page---*/
+.registration-info{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+.registration-info p{
+	font-family: Montserrat;
+	font-size: 18px;
+	font-weight: normal;
+	color: black;
+	text-align: left;
+	margin: 0 0 15px 0;
+}
+.registration-info span:first-child{
+	font-weight: bold;
+}
+/*--------------------*/
+
+/*---Login-Page---*/
+.books-wrap.log{
+	flex-direction: column;
+	justify-content: space-between;
+}
+.go-to.log{
+	width: 100%;
+}
+.authorize-form{
+	display: flex;
+	flex-direction: column;
+	width: 400px;
+	align-items: center;
+}
+.authorize-form input{
+	width: 100%;
+	height: 30px;
+	background: white;
+	border: 1px solid #261002;
+	margin: 0 0 15px 0;
+	padding: 0 0 0 10px;
+	font-size: 16px;
+	font-weight: normal;
+}
+.authorize-form input[type="submit"]{
+	width: 50%;
+	background: #79350A;
+	margin: 0 0 15px 0;
+	padding: 0;
+	font-size: 18px;
+	font-weight: bold;
+	color: white;
+}
+.authorize-form p{
+	font-size: 16px;
+	font-weight: normal;
+	color: black;
+	font-family: Montserrat;
+	margin: 0;
+}
+.authorize-form a{
+	color: #261002;
+	font-weight: 600;
+}
+.error-p p{
+	font-size: 18px;
+	font-weight: normal;
+	color: black;
+	font-family: Montserrat;
+	margin: 0 0 15px 0;
+	background: url("../img/error.png") 0 0/contain no-repeat;
+	padding: 0 0 0 25px;
+}
+.error-p p:last-child{
+	margin: 0 0 30px 0;
+}
+.error-p span{
+	font-weight: bold;
+}
+/*--------------------*/
+
+/*---Registration-Page---*/
+.authorize-form label{
+	width: 100%;
+	text-align: left;
+	font-size: 16px;
+	font-weight: normal;
+	color: black;
+	font-family: Montserrat;
+	margin: 0 0 5px 0;
+}
+.authorize-form.reg input{
+	margin: 0 0 10px 0;
+}
+/*--------------------*/
+
+/*---Reader-Abonnement---*/
+.accordion span{
+	font-size: 16px;
+	color: black;
+	font-weight: 500;
+}
+.book-info.reader{
+	background: url("../img/in-process.png") 0 50% / 18px 18px no-repeat;
+	padding: 0 0 0 24px;
+}
+.book-info.late{
+	background: url("../img/late.png") 0 50% / 18px 18px no-repeat;
+}
+.book-info.late span{
+	color: red;
+	font-weight: 700;
+}
+.book-info.done{
+	background: url("../img/done.png") 0 50% / 18px 18px no-repeat;
+}
+.book-info.done p{
+	opacity: 50%;
+}
+.book-info.done span{
+	color: #11945A;
+}
+/*--------------------*/
+
+/*---Reader-Page---*/
+.side-bar.twin{
+	box-shadow: 5px 0px 9px rgba(38, 16, 2, 0.25);
+}
+.side-bar.right{
+	align-items: flex-end;
+	margin: 0 -15px 0 15px;
+	box-shadow: -5px 0px 9px rgba(38, 16, 2, 0.25);
+}
+/*--------------------*/
+
+/*---Librarian-Give-Book-on-Abonnment-Page---*/
+.give-form{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+.give-form p{
+	width: 100%;
+	text-align: center;
+}
+.error-p{
+	width: 100%;
+}
+.go-to.give{
+	justify-content: space-between;
+	height: 100%;
+}
+.give-info{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin: 0 0 15px 0;
+}
+.give-info p{
+	font-size: 18px;
+	font-weight: normal;
+	color: black;
+	font-family: Montserrat;
+	margin: 0 0 15px 0;
+	text-align: left;
+}
+.authorize-form.give{
+	align-items: flex-start;
+	padding: 10px 0;
+	border-top: 1px dashed #261002;
+	border-bottom: 1px dashed #261002;
+}
+/*--------------------*/
+
+/*---Message-Page---*/
+.sys-message{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	align-items: flex-start;
+}
+.sys-message p{
+	width: 100%;
+	font-size: 16px;
+	line-height: 20px;
+	font-weight: normal;
+	color: black;
+	font-family: Montserrat;
+	margin: 0 0 10px 0;
+	text-align: center;
+}
+.sys-message p:last-child{
+	margin: 0;
+}
+/*--------------------*/
+
+/*---Footer---*/
+.footer{
+	display: flex;
+	flex: 0 0 50px;
+	background: #261002;
+}
+.footer-content{
+	display: flex;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	font-size: 20px;
+	font-family: Vollkorn;
+	font-weight: bold;
+}
+/*--------------------*/
+
+
+/*---Effects---*/
+input[type="submit"]{
+	transition: all 0.5s ease;
+}
+input[type="text"]:focus{
+	background: #79350A;
+}
+input[type="submit"]:hover, .search-all input[type="submit"]:hover{
+	color: white;
+	background: #79350A;
+}
+.search input[type="text"]:focus, .select select:focus{
+	background: #79350A;
+}
+.search input[type="submit"]:hover{
+	background: url('../img/search-hov.jpg') center / cover;
+}
+.select input[type="submit"]:hover{
+	text-decoration: underline;
+	background: none;
+}
+
+.book:hover{
+	box-shadow: 9px 9px 9px rgba(0, 0, 0, 0.45);
+	cursor: pointer;
+}
+.book a:hover{
+	background: #79350A;
+	border: 1px solid #261002;
+	color: white;
+
+}
+.pagination button:hover{
+	color: white;
+	background: #261002;
+}
+.nav li a:hover, .admin-menu a:hover{
+	text-decoration: underline;
+}
+.accordion input[type="submit"]:hover, .librarians-list input[type="submit"]:hover{
+	color: black;
+	background: none;
+	text-decoration: underline;
+}
+.new-book input:focus, .authorize-form input:focus{
+	background: white;
+	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25);
+}
+.authorize-form a:hover{
+	text-decoration: underline;
+}
+.authorize-form input[type="submit"]:hover{
+	background: #261002;
+}
+/*--------------------*/

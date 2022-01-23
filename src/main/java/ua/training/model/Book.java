@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
 
-@Entity
+@Entity(name = "books")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,5 +38,12 @@ public class Book {
     private Integer quantity;
 
     private LocalDate publishedAt;
+
+    @Column(name = "img_url")
+    private String imgUrl;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "main_author_id", nullable = false)
+    private Author mainAuthor;
 
 }
