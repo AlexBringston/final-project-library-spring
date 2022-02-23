@@ -1,18 +1,14 @@
 package ua.training.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.session.SessionInformation;
-import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.training.model.Book;
 import ua.training.model.User;
-import ua.training.model.dto.input.BookPublisherDTO;
+import ua.training.model.dto.input.AdminBookDTO;
+import ua.training.model.dto.input.BookDTO;
 import ua.training.model.dto.input.SearchUserDTO;
 import ua.training.model.dto.output.UserDTO;
 import ua.training.services.BookService;
@@ -20,9 +16,9 @@ import ua.training.services.UserService;
 
 import javax.validation.Valid;
 
+
 @Controller
 @RequestMapping("/admin")
-@SessionAttributes("searchUserDTO")
 public class AdminController {
 
     private final BookService bookService;
@@ -40,81 +36,117 @@ public class AdminController {
     }
 
     @GetMapping("/showBooks")
-    public String showAllBooks() {
+    public String showAllBooks(@ModelAttribute("adminBookDTO") AdminBookDTO adminBookDTO,
+                               Model model) {
+        model.addAttribute("books", bookService.getAllAvailableBooks(adminBookDTO));
         return "/admin/adminBooks";
     }
 
     @GetMapping("/addBook")
-    public String addBookForm(@ModelAttribute("bookPublisherDTO") BookPublisherDTO bookPublisherDTO, Model model) {
-        model.addAttribute("bookPublisherDTO", bookPublisherDTO);
+    public String addBookForm(Model model) {
+        model.addAttribute("book", new Book());
         return "/admin/adminNewBook";
     }
 
-    @PostMapping("/addDetail")
-    public String addBookDetail(@ModelAttribute("bookPublisherDTO") BookPublisherDTO bookPublisherDTO,
-                                RedirectAttributes redirectAttributes) {
-        Book book = bookService.addBookDetails(bookPublisherDTO.getBook(), bookPublisherDTO.getAuthorId(),
-                bookPublisherDTO.getPublisherId(), bookPublisherDTO.getQuantity(), bookPublisherDTO.getPublishedAt());
-        bookPublisherDTO.setBook(book);
-        redirectAttributes.addFlashAttribute("bookPublisherDTO", bookPublisherDTO);
-        return "redirect:/addBook";
-    }
-
     @PostMapping("/addBook")
-    public String addBook(@Valid @ModelAttribute("bookPublisherDTO") BookPublisherDTO bookPublisherDTO, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
+    public String addBook(@Valid @ModelAttribute("book") Book book,
+                          BindingResult bindingResult) {
+        boolean errors = bindingResult.hasErrors();
+        if (!bookService.checkIfAuthorExists(book)) {
+            bindingResult.rejectValue("mainAuthor.name", "404", "There is no author with given values");
+            errors = true;
+        }
+        if (!bookService.checkIfPublisherExists(book)) {
+            bindingResult.rejectValue("publisher.name", "404", "There is no publisher with given values");
+            errors = true;
+        }
+        if (errors) {
             return "/admin/adminNewBook";
         }
-
-        System.out.println(bookPublisherDTO.getBook());
-        System.out.println(bookPublisherDTO.getPublisherId());
-        System.out.println(bookPublisherDTO.getAuthorId());
-        //bookService.saveBook(book);
-        return "redirect:/admin";
+        bookService.createABook(book);
+        return "redirect:/admin/showBooks";
     }
 
-    @ModelAttribute("bookPublisherDTO")
-    public BookPublisherDTO bookPublisherDTO() {
-        return new BookPublisherDTO();
-    }
 
-    @PutMapping("/deleteBook")
-    public String deleteBook(@ModelAttribute("book") Book book) {
+    @PostMapping("/deleteBook/{id}")
+    public String deleteBook(@PathVariable("id") Long bookId) {
+        Book book = bookService.findBookById(bookId);
         book.setAvailable(false);
+        System.out.println(book);
         bookService.saveBook(book);
-        return "redirect:/admin";
+        return "redirect:/admin/showBooks";
     }
 
+    @GetMapping("/updateBookAuthors/{id}")
+    public String updateBookAuthorsForm(@PathVariable("id") Long bookId, Model model) {
 
-    @GetMapping("/updateBook")
-    public String updateBookForm(@ModelAttribute("bookPublisherDTO") BookPublisherDTO bookPublisherDTO, Model model) {
-        model.addAttribute("bookPublisherDTO", bookPublisherDTO);
+        Book book = bookService.findBookById(bookId);
+        model.addAttribute("book", book);
+        model.addAttribute("bookDTO", new BookDTO());
+
+        return "/admin/adminEditBookAuthors";
+    }
+
+    @PostMapping("/addDetail/{id}")
+    public String addBookDetail(@PathVariable("id") Long bookId,
+                                @ModelAttribute("bookDTO") BookDTO bookDTO) {
+        bookService.setUpdatesForBook(bookId, bookDTO);
+        return "redirect:/admin/updateBookAuthors/" + bookId;
+    }
+
+    @GetMapping("/updateBook/{id}")
+    public String updateBookForm(@PathVariable("id") Long bookId, Model model) {
+
+        Book book = bookService.findBookById(bookId);
+        model.addAttribute("book", book);
+
         return "/admin/adminEditBook";
     }
 
-    @PutMapping("/updateBook")
-    public String updateBook(@ModelAttribute("bookPublisherDTO") BookPublisherDTO bookPublisherDTO,
-                             @ModelAttribute("deleteFlag") boolean deleteFlag) {
-
-        bookService.changeBookInfo(bookPublisherDTO, deleteFlag);
-        return "redirect:/admin";
+    @PostMapping("/updateBook")
+    public String updateBook(@Valid @ModelAttribute("book") Book book, BindingResult bindingResult) {
+        boolean errors = bindingResult.hasErrors();
+        if (!bookService.checkIfAuthorExists(book)) {
+            bindingResult.rejectValue("mainAuthor.name", "404", "There is no author with given values");
+            errors = true;
+        }
+        if (!bookService.checkIfPublisherExists(book)) {
+            bindingResult.rejectValue("publisher.name", "404", "There is no publisher with given values");
+            errors = true;
+        }
+        if (errors) {
+            return "/admin/adminEditBook";
+        }
+        bookService.createABook(book);
+        return "redirect:/admin/showBooks";
     }
 
     @GetMapping("/showLibrarians")
-    public String showAllLibrarians() {
+    public String showAllLibrarians(@ModelAttribute("searchUserDTO") SearchUserDTO searchUserDTO, Model model) {
+        model.addAttribute("librarians", userService.getUsersByRolePerPage(searchUserDTO, "ROLE_LIBRARIAN"));
         return "/admin/adminLibrarians";
     }
 
-    @PutMapping("/createLibrarian")
-    public String createLibrarianUser(@ModelAttribute("user")User user) {
-        userService.setLibrarianRole(user);
-        return "redirect:/admin";
+    @GetMapping("/createLibrarian")
+    public String getCreateLibrarianForm(Model model) {
+        model.addAttribute("user", new User());
+        return "/admin/adminNewLibrarian";
     }
 
-    @PutMapping("/removeLibrarian")
-    public String removeLibrarianUser(@ModelAttribute("user")User user) {
-        userService.removeLibrarianRole(user);
-        return "redirect:/admin";
+    @PostMapping("/createLibrarian")
+    public String createLibrarianUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "/admin/adminNewLibrarian";
+        }
+
+        userService.registerNewUser(user, "ROLE_LIBRARIAN");
+        return "redirect:/admin/showLibrarians";
+    }
+
+    @PostMapping("/removeLibrarian/{id}")
+    public String removeLibrarianUser(@PathVariable("id") Long userId) {
+        userService.removeLibrarianRole(userId);
+        return "redirect:/admin/showLibrarians";
     }
 
     @GetMapping("/showUsers")
@@ -131,31 +163,18 @@ public class AdminController {
                                    @RequestParam("action") String action,
                                    @PathVariable("id") Long id,
                                    Model model) {
-        System.out.println("USER ID " + id);
-        if (action.equals("block")) {
-            userService.blockUser(id);
-        }
-        if (action.equals("unblock")) {
-            userService.unblockUser(id);
-        }
+        userService.updateUserStatus(action, id);
         model.addAttribute("userDTO", userService.findUsersOrderedByName(searchUserDTO));
         return "/admin/adminUsers";
     }
-    /*@PutMapping("/blockUser")
-    public String blockUser(@ModelAttribute("user")User user) {
-        userService.blockUser(user);
-        return "redirect:/admin";
-    }
-
-    @PutMapping("/unblockUser")
-    public String unblockUser(@ModelAttribute("user")User user) {
-        userService.unblockUser(user);
-        return "redirect:/admin";
-    }*/
 
     @ModelAttribute("searchUserDTO")
     public SearchUserDTO searchUserDTO() {
         return new SearchUserDTO();
     }
 
+    @ModelAttribute("adminBookDTO")
+    public AdminBookDTO adminBookDTO() {
+        return new AdminBookDTO();
+    }
 }

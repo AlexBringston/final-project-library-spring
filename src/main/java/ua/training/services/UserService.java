@@ -1,8 +1,8 @@
 package ua.training.services;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,11 +10,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.training.model.User;
+import ua.training.model.dto.input.AbstractSearchDTO;
 import ua.training.model.dto.input.SearchUserDTO;
 import ua.training.model.dto.output.UserDTO;
 import ua.training.repositories.BookRepository;
@@ -27,6 +27,7 @@ import java.time.Period;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Log4j2
 @Service
 public class UserService implements UserDetailsService {
 
@@ -36,7 +37,6 @@ public class UserService implements UserDetailsService {
 
     private final RoleRepository roleRepository;
 
-//    private final PasswordEncoder passwordEncoder = NoOpPasswordEncoder.getInstance();
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
@@ -49,72 +49,88 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        System.out.println(username);
-//        System.out.println(userRepository.findByUsername(username).orElseThrow(RuntimeException::new));
-        return userRepository.findByUsername(username).orElseThrow(RuntimeException::new);
+        log.info("Loading a user with given username");
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User with " +
+                "given username was not found"));
     }
 
-    public void registerNewUser(User user) {
+    public User registerNewUser(User user, String role) {
+        log.info("Creating a user with role: " + role);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(roleRepository.findByName(role));
+        return userRepository.save(user);
+    }
+
+    @Transactional
+    public User removeLibrarianRole(Long userId) {
+        log.info("Removing librarian role from user");
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Could not find such user"));
         user.setRole(roleRepository.findByName("ROLE_READER"));
-        userRepository.save(user);
-    }
-
-    @Transactional
-    public void setLibrarianRole(User user) {
-        user.setRole(roleRepository.findByName("ROLE_LIBRARIAN"));
-        userRepository.save(user);
-    }
-
-    @Transactional
-    public void removeLibrarianRole(User user) {
-        user.setRole(roleRepository.findByName("ROLE_READER"));
-        userRepository.save(user);
-    }
-
-    @Transactional
-    public void blockUser(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(RuntimeException::new);
-        user.setAccountNonLocked(false);
-        userRepository.save(user);
-    }
-
-    @Transactional
-    public void unblockUser(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(RuntimeException::new);
-        user.setAccountNonLocked(true);
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     public UserDTO findUsersOrderedByName(SearchUserDTO searchUserDTO) {
         Page<User> usersBySurname = userRepository.findAll(PageRequest.of(searchUserDTO.getPageNumber(),
                 Constants.NUMBER_OF_ITEMS_PER_PAGE,
                 Sort.by(Sort.Direction.valueOf(searchUserDTO.getSortDirection()), searchUserDTO.getSortField())));
-
-        return new UserDTO(usersBySurname, findUserAge(usersBySurname),
-                countBooksInUsersAbonnement(usersBySurname));
+        return new UserDTO(usersBySurname, findUsersAges(usersBySurname),
+                countBooksInUsersAbonnements(usersBySurname));
     }
 
-    private List<Integer> findUserAge(Page<User> users) {
-//        return Period.between(user.getBirthDate(), LocalDate.now()).getYears();
-        return users.stream().map(user -> Period.between(user.getBirthDate(), LocalDate.now()).getYears()).collect(Collectors.toList());
+    private List<Integer> findUsersAges(Page<User> users) {
+        log.info("Counting ages of each user is a list");
+        return users.stream()
+                .map(user -> Period.between(user.getBirthDate(), LocalDate.now()).getYears())
+                .collect(Collectors.toList());
     }
 
-    private List<Integer> countBooksInUsersAbonnement(Page<User> users) {
-//        return bookRepository.countBooksByUserId(user.getId());
-        return users.stream().map(user -> bookRepository.countBooksByUserId(user.getId())).collect(Collectors.toList());
+    private List<Integer> countBooksInUsersAbonnements(Page<User> users) {
+        log.info("Counting books taken by each user in a list");
+        return users.stream()
+                .map(user -> bookRepository.countBooksByUserId(user.getId()))
+                .collect(Collectors.toList());
     }
 
     public User getCurrentUser() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        log.info("Retrieving current logged user info");
+        Object principal = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
-            username = ((User)principal).getUsername();
+            username = ((User) principal).getUsername();
         } else {
             username = principal.toString();
         }
 
-        return (User)loadUserByUsername(username);
+        return (User) loadUserByUsername(username);
     }
 
+    public Page<User> getUsersByRolePerPage(AbstractSearchDTO searchDTO, String role) {
+        log.info("Retrieving users for a current page");
+        return userRepository.findAllByRole(roleRepository.findByName(role),
+                PageRequest.of(searchDTO.getPageNumber(),
+                        Constants.NUMBER_OF_ITEMS_PER_PAGE,
+                        Sort.by(Sort.Direction.valueOf(searchDTO.getSortDirection()), searchDTO.getSortField())));
+    }
+
+    public User findUserById(Long userId) {
+        log.info("Looking for a user with id: " + userId);
+        return userRepository
+                .findById(userId
+                ).orElseThrow(RuntimeException::new);
+    }
+
+    public void updateUserStatus(String action, Long id) {
+        log.info("Changing user status");
+        User user = userRepository.findById(id).orElseThrow(RuntimeException::new);
+        if (action.equals("block")) {
+            user.setAccountNonLocked(false);
+        }
+        if (action.equals("unblock")) {
+            user.setAccountNonLocked(true);
+        }
+        userRepository.save(user);
+    }
 }
