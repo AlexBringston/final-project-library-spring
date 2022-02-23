@@ -8,7 +8,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import ua.training.model.User;
 import ua.training.model.dto.input.BookSearchDTO;
 import ua.training.services.BookService;
@@ -48,9 +51,10 @@ public class BaseController {
     }
 
     @GetMapping("/register")
-    public String getRegistrationPage() {
+    public String getRegistrationPage(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            model.addAttribute("user",new User());
             return "registration";
         }
         return "redirect:/";
@@ -62,9 +66,7 @@ public class BaseController {
             System.out.println(bindingResult.getAllErrors());
             return "registration";
         }
-
-        userService.registerNewUser(user);
-
+        userService.registerNewUser(user, "ROLE_READER");
         return "redirect:/login";
     }
 

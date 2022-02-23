@@ -19,86 +19,33 @@
 			<div class="books-wrap">
 				<div th:replace="librarian/side-bar :: side-bar"></div>
 				<div class="go-to">
-					<p>Читачі</p>
+					<p th:text="#{librarian.readers}">Читачі</p>
 					<div class="books-list">
-						<div class="book-info">
+						<div class="book-info" th:each="reader : ${readers}">
 							<div class="librarians-list">
-								<p>Копійка Олексій</p>
-								<form class="accordion-btns">
-									<button type="submit" value="Переглянути абонемент">Переглянути абонемент</button>
+								<p th:text="|${reader.getName()} ${reader.getSurname()}|">Копійка Олексій</p>
+								<form class="accordion-btns" method="get"
+									  th:action="@{/librarian/abonnement/{id}(id = ${reader.getId()})}">
+									<button type="submit" th:text="#{button.show.abonnement}">Переглянути абонемент</button>
 								</form>
 							</div>
 						</div>
-						<div class="book-info">
-							<div class="librarians-list">
-								<p>Дячук Андрій</p>
-								<form class="accordion-btns">
-									<button type="submit" value="Переглянути абонемент">Переглянути абонемент</button>
-								</form>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="librarians-list">
-								<p>Копійка Олексій</p>
-								<form class="accordion-btns">
-									<button type="submit" value="Переглянути абонемент">Переглянути абонемент</button>
-								</form>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="librarians-list">
-								<p>Дячук Андрій</p>
-								<form class="accordion-btns">
-									<button type="submit" value="Переглянути абонемент">Переглянути абонемент</button>
-								</form>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="librarians-list">
-								<p>Копійка Олексій</p>
-								<form class="accordion-btns">
-									<button type="submit" value="Переглянути абонемент">Переглянути абонемент</button>
-								</form>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="librarians-list">
-								<p>Дячук Андрій</p>
-								<form class="accordion-btns">
-									<button type="submit" value="Переглянути абонемент">Переглянути абонемент</button>
-								</form>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="librarians-list">
-								<p>Копійка Олексій</p>
-								<form class="accordion-btns">
-									<button type="submit" value="Переглянути абонемент">Переглянути абонемент</button>
-								</form>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="librarians-list">
-								<p>Дячук Андрій</p>
-								<form class="accordion-btns">
-									<button type="submit" value="Переглянути абонемент">Переглянути абонемент</button>
-								</form>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="librarians-list">
-								<p>Копійка Олексій</p>
-								<form class="accordion-btns">
-									<button type="submit" value="Переглянути абонемент">Переглянути абонемент</button>
-								</form>
-							</div>
-						</div>
+
 					</div>
-					<form class="pagination">
-						<button><<</button>
-						<button><</button>
-						<button>></button>
-						<button>>></button>
+					<form class="pagination"  id="form1" method="get" action="/librarian/readers">
+
+						<button th:if="${readers.totalPages!=1 && !readers.isFirst()}"
+								form="form1"
+								type="submit" name="pageNumber" value="0" th:text="#{button.first}"> TEXT </button>
+						<button th:if="${readers.hasPrevious()}" type="submit" name="pageNumber" form="form1"
+								th:value="${readers.previousPageable().getPageNumber()}" th:text="#{button.left}">
+							TEXT</button>
+						<button th:if="${readers.hasNext()}" type="submit" name="pageNumber" form="form1"
+								th:value="${readers.nextPageable().getPageNumber()}" th:text="#{button.right}">TEXT
+						</button>
+						<button th:if="${readers.totalPages!=1 && !readers.isLast()}"
+								type="submit" name="pageNumber" form="form1"
+								th:value="${readers.totalPages - 1}" th:text="#{button.last}" >TEXT</button>
 					</form>
 				</div>
 			</div>
