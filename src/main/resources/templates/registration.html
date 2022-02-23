@@ -20,27 +20,29 @@
     <div class="container">
         <div class="books-wrap log">
             <div class="go-to log">
-                <p>Зареєструватися</p>
+                <p th:text="#{button.register}">Зареєструватися</p>
                 <form action="/register" method="post" th:object="${user}">
                     <div class="authorize-form reg">
-                        <label for="reg-name">Введіть ім'я:</label>
+                        <label for="reg-name" th:text="#{placeholder.enter.name}">Введіть ім'я:</label>
                         <input id="reg-name" name="name" type="text">
-                        <label for="reg-surname">Введіть прізвище:</label>
+                        <label for="reg-surname" th:text="#{placeholder.enter.surname}">Введіть прізвище:</label>
                         <input id="reg-surname" name="surname" type="text">
-                        <label for="reg-login">Введіть логін:</label>
+                        <label for="reg-login" th:text="#{placeholder.enter.login}">Введіть логін:</label>
                         <input id="reg-login" name="username" type="text">
-                        <label for="reg-password">Введіть пароль:</label>
+                        <label for="reg-password" th:text="#{placeholder.enter.password}">Введіть пароль:</label>
                         <input id="reg-password" name="password" type="password">
-                        <label for="reg-date">Введіть дату народження:</label>
+                        <label for="reg-date" th:text="#{placeholder.enter.birth.date}">Введіть дату народження:</label>
                         <input id="reg-date" name="birthDate" type="date">
-                        <input type="submit" value="Register">
-                        <p>Вже маєте акаунт? <a href="#">Увійти</a></p>
+                        <input type="submit" th:value="#{button.register}">
+                        <p><span th:text="|#{title.already.registered} |">Вже маєте акаунт? </span>
+                            <a th:href="@{/login}" th:text="#{button.login}">Увійти</a>
+                        </p>
                     </div>
                 </form>
             </div>
-            <div class="error-p">
-                <p><span>Помилка: </span>введено невірний пароль</p>
-                <p><span>Помилка: </span>введено невірний пароль</p>
+            <div class="error-p" th:if="${#fields.hasErrors('${user.*}')}">
+                <p th:each="err : ${#fields.errors('${user.*}')}"><span>Error: </span><span
+                        th:text="${err}">Error text</span></p>
             </div>
         </div>
     </div>

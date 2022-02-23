@@ -19,151 +19,50 @@
 			<div class="books-wrap">
 				<div th:replace="librarian/side-bar :: side-bar"></div>
 				<div class="go-to">
-					<p>Замовлення</p>
+					<p th:text="#{librarian.orders}">Замовлення</p>
 					<div class="books-list">
 						<div class="book-info" th:each="request: ${requests}">
 							<div class="accordion">
 								<p th:text="${request.getBook().getName()}">"Шестірка Воронів"</p>
+								<p th:if="${request.getBook().isOnlyForReadingHall()}">Лише в читальний зал</p>
 								<div class="accordion-btns">
-									<form action="">
-										<button type="submit" value="Видати (А)">Видати (А)</button>
+									<form th:action="@{/librarian/orders/confirmation/{id}(id=${request.getId()})}"
+										  method="post">
+<!--										<input type="hidden" name="request" th:value="${request}">-->
+										<button type="submit" name="action" value="abonnement" th:text="#{librarian.hand.over.abonnement}">Видати
+											(А)</button>
+										<button type="submit" name="action" value="readingHall"
+												th:text="#{librarian.hand.over.reading.room}">Видати
+											(ЧЗ)</button>
 
-										<button type="submit" value="Видати (ЧЗ)">Видати (ЧЗ)</button>
-
-										<button type="submit" value="Відмовити">Відмовити</button>
+										<button type="submit" name="action" value="reject" th:text="#{librarian.reject}">Відмовити
+										</button>
 									</form>
 								</div>
 							</div>
 							<div class="panel">
 								<p
-										th:text="|Ordered by: ${request.getUser().getName()} ${request.getUser().getSurname()}|">Замовник: Олексій Копійка</p>
+										th:text="|#{title.ordered.by} : ${request.getUser().getName()} ${request.getUser().getSurname()}|">
+									Замовник: Олексій Копійка
+								</p>
 							</div>
 						</div>
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка Воронів"</p>
-								<div class="accordion-btns">
-									<form action="">
-										<button type="submit" value="Видати (А)">Видати (А)</button>
 
-										<button type="submit" value="Видати (ЧЗ)">Видати (ЧЗ)</button>
-
-										<button type="submit" value="Відмовити">Відмовити</button>
-									</form>
-								</div>
-							</div>
-							<div class="panel">
-								<p>Замовник: Олексій Копійка</p>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка Воронів"</p>
-								<div class="accordion-btns">
-									<form action="">
-										<button type="submit" value="Видати (А)">Видати (А)</button>
-
-										<button type="submit" value="Видати (ЧЗ)">Видати (ЧЗ)</button>
-
-										<button type="submit" value="Відмовити">Відмовити</button>
-									</form>
-								</div>
-							</div>
-							<div class="panel">
-								<p>Замовник: Олексій Копійка</p>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка Воронів"</p>
-								<div class="accordion-btns">
-									<form action="">
-										<button type="submit" value="Видати (А)">Видати (А)</button>
-
-										<button type="submit" value="Видати (ЧЗ)">Видати (ЧЗ)</button>
-
-										<button type="submit" value="Відмовити">Відмовити</button>
-									</form>
-								</div>
-							</div>
-							<div class="panel">
-								<p>Замовник: Олексій Копійка</p>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка Воронів"</p>
-								<div class="accordion-btns">
-									<form action="">
-										<button type="submit" value="Видати (А)">Видати (А)</button>
-
-										<button type="submit" value="Видати (ЧЗ)">Видати (ЧЗ)</button>
-
-										<button type="submit" value="Відмовити">Відмовити</button>
-									</form>
-								</div>
-							</div>
-							<div class="panel">
-								<p>Замовник: Олексій Копійка</p>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка Воронів"</p>
-								<div class="accordion-btns">
-									<form action="">
-										<button type="submit" value="Видати (А)">Видати (А)</button>
-
-										<button type="submit" value="Видати (ЧЗ)">Видати (ЧЗ)</button>
-
-										<button type="submit" value="Відмовити">Відмовити</button>
-									</form>
-								</div>
-							</div>
-							<div class="panel">
-								<p>Замовник: Олексій Копійка</p>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка Воронів"</p>
-								<div class="accordion-btns">
-									<form action="">
-										<button type="submit" value="Видати (А)">Видати (А)</button>
-
-										<button type="submit" value="Видати (ЧЗ)">Видати (ЧЗ)</button>
-
-										<button type="submit" value="Відмовити">Відмовити</button>
-									</form>
-								</div>
-							</div>
-							<div class="panel">
-								<p>Замовник: Олексій Копійка</p>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка Воронів"</p>
-								<div class="accordion-btns">
-									<form action="">
-										<button type="submit" value="Видати (А)">Видати (А)</button>
-
-										<button type="submit" value="Видати (ЧЗ)">Видати (ЧЗ)</button>
-
-										<button type="submit" value="Відмовити">Відмовити</button>
-									</form>
-								</div>
-							</div>
-							<div class="panel">
-								<p>Замовник: Олексій Копійка</p>
-							</div>
-						</div>
 					</div>
-					<form class="pagination">
-						<button><<</button>
-						<button><</button>
-						<button>></button>
-						<button>>></button>
+					<form class="pagination"  id="form1" method="get" action="/librarian/orders">
+
+						<button th:if="${requests.totalPages!=1 && !requests.isFirst()}"
+								form="form1"
+								type="submit" name="pageNumber" value="0" th:text="#{button.first}"> TEXT </button>
+						<button th:if="${requests.hasPrevious()}" type="submit" name="pageNumber" form="form1"
+								th:value="${requests.previousPageable().getPageNumber()}" th:text="#{button.left}">
+							TEXT</button>
+						<button th:if="${requests.hasNext()}" type="submit" name="pageNumber" form="form1"
+								th:value="${requests.nextPageable().getPageNumber()}" th:text="#{button.right}">TEXT
+						</button>
+						<button th:if="${requests.totalPages!=1 && !requests.isLast()}"
+								type="submit" name="pageNumber" form="form1"
+								th:value="${requests.totalPages - 1}" th:text="#{button.last}" >TEXT</button>
 					</form>
 				</div>
 			</div>

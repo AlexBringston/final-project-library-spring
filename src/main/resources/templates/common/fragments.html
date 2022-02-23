@@ -4,9 +4,9 @@
 
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<div th:fragment="topper" class="topper" sec:authorize="isAuthenticated()">
+<div th:fragment="topper" class="topper">
     <form class="search" method="get" id="form1" action="/reader/search">
-        <input type="text" name="query" placeholder="Пошук">
+        <input type="text" name="query" placeholder="Search">
         <input type="submit" value="">
     </form>
 </div>
@@ -18,11 +18,13 @@
             <div class="logo-locale">
                 <span class="logo"><a th:href="@{/}"><img th:src="@{/img/logo.svg}" alt=""/></a> </span>
                 <form class="select">
-                    <input type="submit" name="locale" action="" value="UA">
+                    <input type="submit" name="locale" value="UA">
+                    <input type="submit" name="locale" value="EN">
                 </form>
             </div>
             <ul>
-                <li><a sec:authorize="hasRole('ROLE_READER')" th:href="@{/reader/getAbonnement}">Abonnement</a></li>
+                <li><a sec:authorize="hasRole('ROLE_READER')" th:href="@{/reader/getAbonnement}" th:text="#{title.abonnement}">
+                    Abonnement</a></li>
                 <li><a th:href="@{/account}"><div sec:authorize="isAuthenticated()"
                                      th:text ="${#authentication.getPrincipal().getName()}">TEXT
                 </div></a></li>

@@ -1,40 +1,59 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>E-library</title>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800;900&family=Vollkorn:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-	<link th:replace="/common/fragments :: css">
-	<link th:replace="/common/fragments :: image"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-library</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800;900&family=Vollkorn:wght@400;600;700;800;900&display=swap"
+          rel="stylesheet">
+    <link th:replace="/common/fragments :: css">
+    <link th:replace="/common/fragments :: image"/>
 </head>
 <body class="body">
 
 
 <div th:replace="common/fragments :: header"></div>
-	<section class="content">
-		<div class="container">
-			<div class="books-wrap">
-				<div th:replace="admin/side-bar :: side-bar"></div>
-				<div class="go-to">
-					<p>Додати книгу</p>
-					<form action="" class="new-book">
-						<input type="text" placeholder="Назва книги">
-						<div class="new-book-authors">
-							<input type="text" placeholder="Автор книги">
-							<input type="submit" action="" value="+">
-						</div>
-						<input type="text" placeholder="Рік видання">
-						<input type="number" min="1" placeholder="Кількість екземплярів">
-						<input type="submit" action="" value="Зберегти">
-					</form>
-				</div>
-			</div>
-		</div>
-	</section>
+<section class="content">
+    <div class="container">
+        <div class="books-wrap">
+            <div th:replace="admin/side-bar :: side-bar"></div>
+            <div class="go-to">
+                <p th:text="#{title.add.book}">Додати книгу</p>
+                <form action="/admin/addBook" method="post" class="new-book" th:object="${book}">
+                    <label for="name">Book name</label>
+                    <input type="text" id="name" placeholder="Назва книги" name="name">
+                    <div class="checkboxDiv">
+                        <label for="checkbox">Is only for reading hall</label>
+                        <input type="checkbox" id="checkbox" name="onlyForReadingHall">
+                    </div>
+                    <label for="publisher">Publisher</label>
+                    <input type="text" id="publisher" placeholder="Publisher" name="publisher.name">
+                    <label for="publishedAt">Published at</label>
+                    <input type="date" placeholder="Рік видання" id="publishedAt" name="publishedAt">
+                    <label for="quantity">Quantity</label>
+                    <input type="number" min="1" id="quantity" placeholder="Кількість екземплярів" name="quantity">
+                    <label for="imgURL">Image URL</label>
+                    <input type="text" id="imgURL" placeholder="Image URL" name="imgUrl">
+                    <label for="mainAuthorName">Main author name</label>
+                    <input type="text" id="mainAuthorName" placeholder="Main author name" name="mainAuthor.name">
+                    <label for="mainAuthorSurname">Main author surname</label>
+                    <input type="text" id="mainAuthorSurname" placeholder="Main author surname"
+                           name="mainAuthor.surname">
+                    <button type="submit" name="action" value="save">Save</button>
+                </form>
+
+                <div class="error-p" th:if="${#fields.hasErrors('${book.*}')}">
+                    <p th:each="err : ${#fields.errors('${book.*}')}"><span>Error: </span><span
+                            th:text="${err}">Error text</span></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
 <div th:replace="common/fragments :: footer"></div>
 </body>
 </html>

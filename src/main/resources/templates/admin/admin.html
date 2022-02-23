@@ -21,14 +21,15 @@
         <div class="books-wrap">
             <div th:replace="admin/side-bar :: side-bar"></div>
             <div class="go-to">
-                <p>Адміністратор</p>
+                <p th:text="#{title.admin}">Адміністратор</p>
                 <div class="registration-info">
-                    <p><span>Користувач:</span>
+                    <p><span th:text="#{title.user}">Користувач:</span>
                         <span th:text="|${#authentication.getPrincipal().getName()} ${#authentication.getPrincipal().getSurname()}|">
                         </span></p>
-                    <p><span>Роль:</span>
+                    <p><span th:text="#{title.role}">Роль:</span>
                         <span th:text="${#authentication.getPrincipal().getRole().getName()}"></span></p>
-                    <p><span>Посада:</span> завідувач бібліотеки</p>
+                    <p><span th:text="#{title.position}">Посада:</span> <span th:text="#{title.position.admin}"> Завідувач
+                        бібліотеки</span></p>
                 </div>
             </div>
         </div>

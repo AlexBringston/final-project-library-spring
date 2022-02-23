@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <div th:fragment="side-bar" class="side-bar">
     <div class="book-sort">
-        <p>Опції</p>
+        <p th:text="#{title.options}">Опції</p>
         <div class="admin-menu">
-            <a th:href="@{/librarian/orders}">Замовлення</a>
-            <a th:href="@{/librarian/readers}">Читачі</a>
+            <a th:href="@{/librarian/orders}" th:text="#{librarian.orders}">Замовлення</a>
+            <a th:href="@{/librarian/readers}" th:text="#{librarian.readers}">Читачі</a>
+            <a th:href="@{/librarian/readingRoom}" th:text="#{librarian.reading.room}">Читальний зал</a>
         </div>
     </div>
 </div>

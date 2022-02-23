@@ -20,158 +20,52 @@
 			<div class="books-wrap">
 				<div th:replace="librarian/side-bar :: side-bar"></div>
 				<div class="go-to">
-					<p>Абонемент Alex Mulyk</p>
+					<p th:if="${contents.content.size() > 0}"
+					   th:text="|#{title.abonnement} ${contents.content.get(0).getUser().getName()} ${contents.content.get(0).getUser().getSurname()}|">
+						Абонемент</p>
+					<p th:if="${contents.content.size() == 0}"
+					   th:text="|#{title.abonnement} has no books in it|">Абонемент</p>
 					<div class="books-list">
-						<div class="book-info">
+						<div class="book-info" th:each="content : ${contents}">
 							<div class="accordion">
-								<p>"Шестірка воронів"</p>
+								<p th:text="${content.getBook().getName()}">"Шестірка воронів"</p>
 								<div class="accordion-btns">
-									<form action="">
-										<input type="submit" value="Повернуто">
-									</form>
-									<form action="">
-										<input type="submit" value="Просрочено">
+									<form action="/librarian/changeAbonnementStatus" method="post">
+										<input type="hidden" name="bookId" th:value="${content.getBook().getId()}">
+										<input type="hidden" name="userId" th:value="${content.getUser().getId()}">
+										<button type="submit" name="action" value="returned"
+												th:text="#{status.returned}">Повернуто
+										</button>
+										<button type="submit" name="action" value="expired" th:text="#{status.expired}">Просрочено
+										</button>
 									</form>
 								</div>
 							</div>
 							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Дата видачі книги: 1.1.2022</p>
-								<p>Термін повернення книги: 31.1.2022</p>
+								<p th:text="|#{title.author} : ${content.getBook().getMainAuthor().getName()} ${content.getBook().getMainAuthor().getSurname()}|">Автор: Лі
+									Бардуго</p>
+								<p th:text="|#{title.return.date} : ${content.getReturnDate()}|">Термін повернення
+									книги: 31.1
+									.2022</p>
 							</div>
 						</div>
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка воронів"</p>
-								<div class="accordion-btns">
-									<form action="">
-										<input type="submit" value="Повернуто">
-									</form>
-									<form action="">
-										<input type="submit" value="Просрочено">
-									</form>
-								</div>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Дата видачі книги: 1.1.2022</p>
-								<p>Термін повернення книги: 31.1.2022</p>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка воронів"</p>
-								<div class="accordion-btns">
-									<form action="">
-										<input type="submit" value="Повернуто">
-									</form>
-									<form action="">
-										<input type="submit" value="Просрочено">
-									</form>
-								</div>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Дата видачі книги: 1.1.2022</p>
-								<p>Термін повернення книги: 31.1.2022</p>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка воронів"</p>
-								<div class="accordion-btns">
-									<form action="">
-										<input type="submit" value="Повернуто">
-									</form>
-									<form action="">
-										<input type="submit" value="Просрочено">
-									</form>
-								</div>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Дата видачі книги: 1.1.2022</p>
-								<p>Термін повернення книги: 31.1.2022</p>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка воронів"</p>
-								<div class="accordion-btns">
-									<form action="">
-										<input type="submit" value="Повернуто">
-									</form>
-									<form action="">
-										<input type="submit" value="Просрочено">
-									</form>
-								</div>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Дата видачі книги: 1.1.2022</p>
-								<p>Термін повернення книги: 31.1.2022</p>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка воронів"</p>
-								<div class="accordion-btns">
-									<form action="">
-										<input type="submit" value="Повернуто">
-									</form>
-									<form action="">
-										<input type="submit" value="Просрочено">
-									</form>
-								</div>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Дата видачі книги: 1.1.2022</p>
-								<p>Термін повернення книги: 31.1.2022</p>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка воронів"</p>
-								<div class="accordion-btns">
-									<form action="">
-										<input type="submit" value="Повернуто">
-									</form>
-									<form action="">
-										<input type="submit" value="Просрочено">
-									</form>
-								</div>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Дата видачі книги: 1.1.2022</p>
-								<p>Термін повернення книги: 31.1.2022</p>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка воронів"</p>
-								<div class="accordion-btns">
-									<form action="">
-										<input type="submit" value="Повернуто">
-									</form>
-									<form action="">
-										<input type="submit" value="Просрочено">
-									</form>
-								</div>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Дата видачі книги: 1.1.2022</p>
-								<p>Термін повернення книги: 31.1.2022</p>
-							</div>
-						</div>
+
 					</div>
-					<form class="pagination">
-						<button><<</button>
-						<button><</button>
-						<button>></button>
-						<button>>></button>
+					<form th:if="${contents.content.size() > 0}" class="pagination" id="form1" method="get"
+						  th:action="@{/librarian/abonnement/{id}(id=${contents.getContent().get(0).getUser().getId()})}">
+
+						<button th:if="${contents.totalPages!=1 && !contents.isFirst()}"
+								form="form1"
+								type="submit" name="pageNumber" value="0" th:text="#{button.first}"> TEXT </button>
+						<button th:if="${contents.hasPrevious()}" type="submit" name="pageNumber" form="form1"
+								th:value="${contents.previousPageable().getPageNumber()}" th:text="#{button.left}">
+							TEXT</button>
+						<button th:if="${contents.hasNext()}" type="submit" name="pageNumber" form="form1"
+								th:value="${contents.nextPageable().getPageNumber()}" th:text="#{button.right}">TEXT
+						</button>
+						<button th:if="${contents.totalPages!=1 && !contents.isLast()}"
+								type="submit" name="pageNumber" form="form1"
+								th:value="${contents.totalPages - 1}" th:text="#{button.last}" >TEXT</button>
 					</form>
 				</div>
 			</div>

@@ -21,20 +21,25 @@
         <div class="books-wrap">
             <div th:replace="admin/side-bar :: side-bar"></div>
             <div class="go-to">
-                <p>Додати бібліотекаря</p>
-                <form action="" class="new-book">
-                    <label for="name">Введіть ім'я:</label>
-                    <input type="text" id="name" placeholder="">
-                    <label for="surname">Введіть прізвище:</label>
-                    <input type="text" id="surname" placeholder="">
-                    <label for="login">Введіть логін:</label>
-                    <input type="text" id="login" placeholder="">
-                    <label for="password">Введіть пароль:</label>
-                    <input type="password" id="password" placeholder="">
-                    <label for="date">Введіть дату народження:</label>
-                    <input id="date" type="date">
-                    <input type="submit" action="" value="Зберегти">
+                <p th:text="#{button.add.librarian}">Додати бібліотекаря</p>
+                <form action="" class="new-book" method="post" th:object="${user}">
+                    <label for="name" th:text="#{placeholder.enter.name}">Введіть ім'я:</label>
+                    <input type="text" id="name" name="name" placeholder="">
+                    <label for="surname" th:text="#{placeholder.enter.surname}">Введіть прізвище:</label>
+                    <input type="text" id="surname" name="surname" placeholder="">
+                    <label for="login" th:text="#{placeholder.enter.login}">Введіть логін:</label>
+                    <input type="text" id="login" name="username" placeholder="">
+                    <label for="password" th:text="#{placeholder.enter.password}">Введіть пароль:</label>
+                    <input type="password" id="password" name="password" placeholder="">
+                    <label for="reg-date" th:text="#{placeholder.enter.birth.date}">Введіть дату народження:</label>
+                    <input id="reg-date" type="date" name="birthDate">
+                    <input type="submit" th:value="#{button.apply}">
                 </form>
+
+                <div class="error-p" th:if="${#fields.hasErrors('${user.*}')}">
+                    <p th:each="err : ${#fields.errors('${user.*}')}"><span>Error: </span><span
+                            th:text="${err}">Error text</span></p>
+                </div>
             </div>
         </div>
     </div>

@@ -1,167 +1,78 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>E-library</title>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800;900&family=Vollkorn:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-	<link th:replace="/common/fragments :: css">
-	<link th:replace="/common/fragments :: image"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-library</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800;900&family=Vollkorn:wght@400;600;700;800;900&display=swap"
+          rel="stylesheet">
+    <link th:replace="/common/fragments :: css">
+    <link th:replace="/common/fragments :: image"/>
 </head>
 <body class="body">
 
 
 <div th:replace="common/fragments :: header"></div>
-	<section class="content">
-		<div class="container">
-			<div class="books-wrap">
-				<div th:replace="admin/side-bar :: side-bar"></div>
-				<div class="go-to">
-					<p>Книги</p>
-					<div class="add-book">
-						<a th:href="@{/admin/addBook}">+ Додати книгу</a>
-					</div>
-					<div class="books-list">
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка Воронів"</p>
-								<form class="accordion-btns">
-									<input type="submit" value="Змінити">
-									<input type="submit" value="Видалити">
-								</form>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Рік видання: 2021</p>
-								<p>Кількість екземплярів: 5</p>
-								<p>Видано: 3</p>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка Воронів"</p>
-								<div class="accordion-btns">
-									<form class="accordion-btns">
-										<input type="submit" value="Змінити">
-									</form>
-									<form class="accordion-btns">
-										<input type="submit" value="Видалити">
-									</form>
-								</div>
+<section class="content">
+    <div class="container">
+        <div class="books-wrap">
+            <div th:replace="admin/side-bar :: side-bar"></div>
+            <div class="go-to">
+                <p>Книги</p>
+                <div class="add-book">
+                    <a th:href="@{/admin/addBook}" th:text="#{title.add.book}">+ Додати книгу</a>
+                </div>
+                <div class="books-list">
+                    <div class="book-info" th:each="book : ${books}">
+                        <div class="accordion">
+                            <p th:text="${book.getName()}">"Шестірка Воронів"</p>
+                            <div class="accordion-btns">
+                                <form method="get" th:action="@{/admin/updateBook/{id}(id=${book.getId()})}">
+                                    <button type="submit" th:text="#{button.change}">Change</button>
+                                </form>
+                                <form method="get" th:action="@{/admin/updateBookAuthors/{id}(id=${book.getId()})}">
+                                    <button type="submit" th:text="#{button.change.authors}">Change authors</button>
+                                </form>
+                                <form method="post"
+                                      th:action="@{/admin/deleteBook/{id}(id=${book.getId()})}" >
+                                    <button type="submit" name="action" value="delete" th:text="#{button.delete}">Delete</button>
+                                </form>
+                            </div>
 
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Рік видання: 2021</p>
-								<p>Кількість екземплярів: 5</p>
-								<p>Видано: 3</p>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка Воронів"</p>
-								<form class="accordion-btns">
-									<input type="submit" value="Змінити">
-									<input type="submit" value="Видалити">
-								</form>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Рік видання: 2021</p>
-								<p>Кількість екземплярів: 5</p>
-								<p>Видано: 3</p>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка Воронів"</p>
-								<form class="accordion-btns">
-									<input type="submit" value="Змінити">
-									<input type="submit" value="Видалити">
-								</form>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Рік видання: 2021</p>
-								<p>Кількість екземплярів: 5</p>
-								<p>Видано: 3</p>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка Воронів"</p>
-								<form class="accordion-btns">
-									<input type="submit" value="Змінити">
-									<input type="submit" value="Видалити">
-								</form>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Рік видання: 2021</p>
-								<p>Кількість екземплярів: 5</p>
-								<p>Видано: 3</p>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка Воронів"</p>
-								<form class="accordion-btns">
-									<input type="submit" value="Змінити">
-									<input type="submit" value="Видалити">
-								</form>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Рік видання: 2021</p>
-								<p>Кількість екземплярів: 5</p>
-								<p>Видано: 3</p>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка Воронів"</p>
-								<form class="accordion-btns">
-									<input type="submit" value="Змінити">
-									<input type="submit" value="Видалити">
-								</form>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Рік видання: 2021</p>
-								<p>Кількість екземплярів: 5</p>
-								<p>Видано: 3</p>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="accordion">
-								<p>"Шестірка Воронів"</p>
-								<form class="accordion-btns">
-									<input type="submit" value="Змінити">
-									<input type="submit" value="Видалити">
-								</form>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Рік видання: 2021</p>
-								<p>Кількість екземплярів: 5</p>
-								<p>Видано: 3</p>
-							</div>
-						</div>
-					</div>
-					<form class="pagination">
-						<button><<</button>
-						<button><</button>
-						<button>></button>
-						<button>>></button>
-					</form>
-				</div>
-			</div>
-		</div>
-	</section>
+                        </div>
+                        <div class="panel">
+                            <p th:text="|#{title.author} : ${book.getMainAuthor().getName()} ${book.getMainAuthor().getSurname()}|">Автор:
+                                Лі Бардуго</p>
+                            <p th:text="|#{title.published.at} : ${book.publishedAt}|">Рік видання: 2021</p>
+                            <p th:text="|#{title.quantity} : ${book.quantity}|">Кількість екземплярів: 5</p>
+                            <p th:text="|#{title.books.taken} : ${book.amountOfBooksTaken}|">Видано: 3</p>
+                        </div>
+                    </div>
+
+                </div>
+                <form class="pagination"  id="form1" method="get" action="/admin/showBooks">
+
+                    <button th:if="${books.totalPages!=1 && !books.isFirst()}"
+                            form="form1"
+                            type="submit" name="pageNumber" value="0" th:text="#{button.first}"> TEXT </button>
+                    <button th:if="${books.hasPrevious()}" type="submit" name="pageNumber" form="form1"
+                            th:value="${books.previousPageable().getPageNumber()}" th:text="#{button.left}">
+                        TEXT</button>
+                    <button th:if="${books.hasNext()}" type="submit" name="pageNumber" form="form1"
+                            th:value="${books.nextPageable().getPageNumber()}" th:text="#{button.right}">TEXT
+                    </button>
+                    <button th:if="${books.totalPages!=1 && !books.isLast()}"
+                            type="submit" name="pageNumber" form="form1"
+                            th:value="${books.totalPages - 1}" th:text="#{button.last}" >TEXT</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
 <div th:replace="common/fragments :: footer"></div>
-	<script th:src="@{/js/main.js}"></script>
+<script th:src="@{/js/main.js}"></script>
 </body>
 </html>

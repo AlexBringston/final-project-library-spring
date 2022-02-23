@@ -1,10 +1,10 @@
 <div th:fragment="side-bar" class="side-bar">
     <div class="book-sort">
-        <p>Опції</p>
+        <p th:text="#{title.options}">Опції</p>
         <div class="admin-menu">
-            <a th:href="@{/admin/showBooks}">Книги</a>
-            <a th:href="@{/admin/showLibrarians}">Бібліотекарі</a>
-            <a th:href="@{/admin/showUsers}">Користувачі</a>
+            <a th:href="@{/admin/showBooks}" th:text="#{admin.books}">Книги</a>
+            <a th:href="@{/admin/showLibrarians}" th:text="#{admin.librarians}">Бібліотекарі</a>
+            <a th:href="@{/admin/showUsers}" th:text="#{admin.users}">Користувачі</a>
         </div>
     </div>
 </div>

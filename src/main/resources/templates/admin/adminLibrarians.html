@@ -21,81 +21,37 @@
 			<div class="books-wrap">
 				<div th:replace="admin/side-bar :: side-bar"></div>
 				<div class="go-to">
-					<p>Бібліотекарі</p>
+					<p th:text="#{admin.librarians}">Бібліотекарі</p>
 					<div class="add-book">
-						<a href="#">+ Додати бібліотекаря</a>
+						<a th:href="@{/admin/createLibrarian}" th:text="#{button.add.librarian}">+ Додати бібліотекаря</a>
 					</div>
 					<div class="books-list">
-						<div class="book-info">
+						<div class="book-info" th:each="librarian : ${librarians}">
 							<div class="librarians-list">
-								<p>Мулик Олександр Вікторович</p>
-								<form class="accordion-btns">
-									<input type="submit" value="Видалити">
+								<p th:text="|${librarian.getName()} ${librarian.getSurname()} |">Мулик Олександр
+									Вікторович</p>
+								<form class="accordion-btns" method="post"
+									  th:action="@{/admin/removeLibrarian/{id}(id=${librarian.getId()})}">
+									<button type="submit" value="delete" th:text="#{button.remove}">Remove</button>
 								</form>
 							</div>
 						</div>
-						<div class="book-info">
-							<div class="librarians-list">
-								<p>Мулик Олександр Вікторович</p>
-								<form class="accordion-btns">
-									<input type="submit" value="Видалити">
-								</form>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="librarians-list">
-								<p>Мулик Олександр Вікторович</p>
-								<form class="accordion-btns">
-									<input type="submit" value="Видалити">
-								</form>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="librarians-list">
-								<p>Мулик Олександр Вікторович</p>
-								<form class="accordion-btns">
-									<input type="submit" value="Видалити">
-								</form>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="librarians-list">
-								<p>Мулик Олександр Вікторович</p>
-								<form class="accordion-btns">
-									<input type="submit" value="Видалити">
-								</form>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="librarians-list">
-								<p>Мулик Олександр Вікторович</p>
-								<form class="accordion-btns">
-									<input type="submit" value="Видалити">
-								</form>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="librarians-list">
-								<p>Мулик Олександр Вікторович</p>
-								<form class="accordion-btns">
-									<input type="submit" value="Видалити">
-								</form>
-							</div>
-						</div>
-						<div class="book-info">
-							<div class="librarians-list">
-								<p>Мулик Олександр Вікторович</p>
-								<form class="accordion-btns">
-									<input type="submit" value="Видалити">
-								</form>
-							</div>
-						</div>
+
 					</div>
-					<form class="pagination">
-						<button><<</button>
-						<button><</button>
-						<button>></button>
-						<button>>></button>
+					<form class="pagination"  id="form1" method="get" action="/admin/showLibrarians">
+
+						<button th:if="${librarians.totalPages!=1 && !librarians.isFirst()}"
+								form="form1"
+								type="submit" name="pageNumber" value="0" th:text="#{button.first}"> TEXT </button>
+						<button th:if="${librarians.hasPrevious()}" type="submit" name="pageNumber" form="form1"
+								th:value="${librarians.previousPageable().getPageNumber()}" th:text="#{button.left}">
+							TEXT</button>
+						<button th:if="${librarians.hasNext()}" type="submit" name="pageNumber" form="form1"
+								th:value="${librarians.nextPageable().getPageNumber()}" th:text="#{button.right}">TEXT
+						</button>
+						<button th:if="${librarians.totalPages!=1 && !librarians.isLast()}"
+								type="submit" name="pageNumber" form="form1"
+								th:value="${librarians.totalPages - 1}" th:text="#{button.last}" >TEXT</button>
 					</form>
 				</div>
 			</div>

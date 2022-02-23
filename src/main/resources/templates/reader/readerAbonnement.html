@@ -18,129 +18,60 @@
 		<div class="container">
 			<div class="books-wrap">
 				<div class="side-bar">
-					<form class="book-sort">
-						<p>Cортувати</p>
-						<select class="localization sort">
-							<option value="name">Назва</option>
-							<option value="author">Автор</option>
-							<option value="return-date">Дата повернення</option>
+					<form class="book-sort" method="get" action="/reader/getAbonnement" id="form1">
+						<p th:text="#{sort.title}">Cортувати</p>
+						<select class="localization sort" name="sortField">
+							<option th:selected="${bookAbonnementDTO.getSortField().equals('book.name')}"
+									value="book.name" th:text="#{sort.field.name}">Назва</option>
+							<option th:selected="${bookAbonnementDTO.getSortField().equals('book.mainAuthor.surname')}"
+									value="book.mainAuthor.surname" th:text="#{sort.field.author}">Автор</option>
+							<option value="returnDate" th:text="#{sort.field.return.date}"
+									th:selected="${bookAbonnementDTO.getSortField().equals('returnDate')}">Дата повернення</option>
 						</select>
-						<select class="localization sort">
-							<option value="asc">За зростанням</option>
-							<option value="desc">За спаданням</option>
+						<select class="localization sort" name="sortDirection">
+							<option th:selected="${bookAbonnementDTO.getSortDirection().equals('ASC')}"
+									value="ASC" th:text="#{sort.direction.asc}">За зростанням</option>
+							<option th:selected="${bookAbonnementDTO.getSortDirection().equals('DESC')}"
+									value="DESC" th:text="#{sort.direction.desc}">За спаданням</option>
 						</select>
-						<input type="submit" action="" value="Застосувати">
+						<input type="submit" th:value="#{button.apply}" form="form1">
 					</form>
 				</div>
 				<div class="go-to">
-					<p>Абонемент</p>
+					<p th:text="#{title.abonnement}">Абонемент</p>
 					<div class="books-list">
-						<div class="book-info reader">
+						<div th:each="abonnement : ${abonnements}" class="book-info reader"
+							 th:classappend="|${abonnement.getStatus().getName().equals('status.expired') ? 'late' : ''}
+							 ${abonnement.getStatus().getName().equals('status.returned') ? 'done' : ''}|">
 							<div class="accordion">
-								<p>"Шестірка воронів"</p>
-								<span>Видано</span>
+								<p th:text="${abonnement.getBook().getName()}">"Шестірка воронів"</p>
+								<span th:unless="${abonnement.getStatus().getName().equals('status.expired')}"
+									  th:text="#{${abonnement.getStatus().getName()}}">Видано</span>
+								<span th:if="${abonnement.getStatus().getName().equals('status.expired')}"
+									  th:text="|#{${abonnement.getStatus().getName()}} : (#{title.penalty} : ${abonnement.getPenalty()})|">
+									Видано</span>
 							</div>
 							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Дата видачі книги: 1.1.2022</p>
-								<p>Дата повернення книги: 31.1.2022</p>
-							</div>
-						</div>
-						<div class="book-info reader late">
-							<div class="accordion">
-								<p>"Шестірка воронів"</p>
-								<span>Простроковано (штраф 400 грн)</span>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Дата видачі книги: 1.1.2022</p>
-								<p>Дата повернення книги: 14.1.2022</p>
-							</div>
-						</div>
-						<div class="book-info reader done">
-							<div class="accordion">
-								<p>"Шестірка воронів"</p>
-								<span>Повернуто</span>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Дата видачі книги: 1.1.2022</p>
-								<p>Дата повернення книги: 15.1.2022</p>
-							</div>
-						</div>
-						<div class="book-info reader">
-							<div class="accordion">
-								<p>"Шестірка воронів"</p>
-								<span>Видано</span>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Дата видачі книги: 1.1.2022</p>
-								<p>Дата повернення книги: 31.1.2022</p>
-							</div>
-						</div>
-						<div class="book-info reader">
-							<div class="accordion">
-								<p>"Шестірка воронів"</p>
-								<span>Видано</span>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Дата видачі книги: 1.1.2022</p>
-								<p>Дата повернення книги: 31.1.2022</p>
-							</div>
-						</div>
-						<div class="book-info reader late">
-							<div class="accordion">
-								<p>"Шестірка воронів"</p>
-								<span>Простроковано (штраф 400 грн)</span>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Дата видачі книги: 1.1.2022</p>
-								<p>Дата повернення книги: 14.1.2022</p>
-							</div>
-						</div>
-						<div class="book-info reader">
-							<div class="accordion">
-								<p>"Шестірка воронів"</p>
-								<span>Видано</span>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Дата видачі книги: 1.1.2022</p>
-								<p>Дата повернення книги: 31.1.2022</p>
-							</div>
-						</div>
-						<div class="book-info reader done">
-							<div class="accordion">
-								<p>"Шестірка воронів"</p>
-								<span>Повернуто</span>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Дата видачі книги: 1.1.2022</p>
-								<p>Дата повернення книги: 15.1.2022</p>
-							</div>
-						</div>
-						<div class="book-info reader done">
-							<div class="accordion">
-								<p>"Шестірка воронів"</p>
-								<span>Повернуто</span>
-							</div>
-							<div class="panel">
-								<p>Автор: Лі Бардуго</p>
-								<p>Дата видачі книги: 1.1.2022</p>
-								<p>Дата повернення книги: 15.1.2022</p>
+								<p th:text="|#{title.author} : ${abonnement.getBook().getMainAuthor().getName()} ${abonnement.getBook().getMainAuthor().getSurname()}|">
+									Автор: Лі Бардуго</p>
+								<p th:text="|#{title.return.date} : ${abonnement.getReturnDate()}|">Дата повернення книги: 31.1.2022</p>
 							</div>
 						</div>
 					</div>
-					<form class="pagination">
-						<button><<</button>
-						<button><</button>
-						<button>></button>
-						<button>>></button>
-					</form>
+					<div class="pagination">
+						<button th:if="${abonnements.totalPages!=1 && !abonnements.isFirst()}"
+								form="form1"
+								type="submit" name="pageNumber" value="0" th:text="#{button.first}"> TEXT </button>
+						<button th:if="${abonnements.hasPrevious()}" type="submit" name="pageNumber" form="form1"
+								th:value="${abonnements.previousPageable().getPageNumber()}" th:text="#{button.left}">
+							TEXT</button>
+						<button th:if="${abonnements.hasNext()}" type="submit" name="pageNumber" form="form1"
+								th:value="${abonnements.nextPageable().getPageNumber()}" th:text="#{button.right}">TEXT
+						</button>
+						<button th:if="${abonnements.totalPages!=1 && !abonnements.isLast()}"
+								type="submit" name="pageNumber" form="form1"
+								th:value="${abonnements.totalPages - 1}" th:text="#{button.last}" >TEXT</button>
+					</div>
 				</div>
 			</div>
 		</div>

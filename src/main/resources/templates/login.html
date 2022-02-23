@@ -19,21 +19,24 @@
 		<div class="container">
 			<div class="books-wrap log">
 				<div class="go-to log">
-					<p>Увійти</p>
+					<p th:text="#{button.login}">Увійти</p>
 					<div class="authorize-form">
-						<form method="post" th:action="@{/login}">
-							<input type="text" name="username" placeholder="Введіть логін">
-							<input type="password" name="password" placeholder="Введіть пароль">
-							<input type="submit" value="Увійти">
+						<form method="post" id="loginForm" th:action="@{/login}">
+							<input type="text" name="username" th:placeholder="#{placeholder.enter.login}" required>
+							<input type="password" name="password" th:placeholder="#{placeholder.enter.password}">
 						</form>
-
-						<p>Hе маєте акаунту? <a th:href="@{/register}">Зареєструватися</a></p>
+						<input type="submit" th:value="#{button.apply}" form="loginForm">
+						<p><span th:text="#{title.no.account}"> Hе маєте акаунту?</span><a th:href="@{/register}"
+																			  th:text="#{button.register}">Зареєструватися
+						</a>
+						</p>
 					</div>
 				</div>
-				<div class="error-p">
-					<p><span>Помилка: </span>введено невірний пароль</p>
-					<p><span>Помилка: </span>введено невірний пароль</p>
+				<div class="error-p" th:if="${param.error}">
+					<p><span th:text="#{title.error}"></span> <span th:text="#{error.data.entered}"></span> </p>
+<!--					<p><span>Помилка: </span><span>введено невірний логін або пароль</span></p>-->
 				</div>
+
 			</div>
 		</div>
 	</section>

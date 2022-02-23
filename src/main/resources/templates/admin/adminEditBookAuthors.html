@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-library</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800;900&family=Vollkorn:wght@400;600;700;800;900&display=swap"
+          rel="stylesheet">
+    <link th:replace="/common/fragments :: css">
+    <link th:replace="/common/fragments :: image"/>
+</head>
+<body class="body">
+
+
+<div th:replace="common/fragments :: header"></div>
+<section class="content">
+    <div class="container">
+        <div class="books-wrap">
+            <div th:replace="admin/side-bar :: side-bar"></div>
+            <div class="go-to">
+                <p>Змінити інформацію про книгу</p>
+                <form th:action="@{/admin/addDetail/{id}(id = ${book.getId()})}" method="post" class="new-book"
+                      th:object="${bookDTO}">
+
+                    <label for="newAuthorName">Author to add (Name)</label>
+                    <div class="new-book-authors">
+                        <input type="text" id="newAuthorName" placeholder="Author name" name="additionalAuthorName">
+                    </div>
+                    <label for="newAuthorSurname">Author to add (Surname)</label>
+                    <div class="new-book-authors">
+                        <input type="text"  id="newAuthorSurname" placeholder="Author surname"
+                               name="additionalAuthorSurname">
+                    </div>
+                    <button type="submit" id="submit-author" name="action" value="+">Add author</button>
+                    <label for="presentAuthors">Present authors</label>
+                    <div class="new-book-authors">
+                        <select id="presentAuthors" class="new-book-select" name="authorToDelete">
+                            <option th:each="author : ${book.getAuthors()}"
+                                    th:text="|${author.getName()} ${author.getSurname()}|">Author
+                                text</option>
+                        </select>
+                        <input type="submit" name="action" value="-">
+                    </div>
+                </form>
+                <form action="/admin/showBooks" method="get" class="new-book">
+                    <input type="submit" value="finish"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<div th:replace="common/fragments :: footer"></div>
+</body>
+</html>

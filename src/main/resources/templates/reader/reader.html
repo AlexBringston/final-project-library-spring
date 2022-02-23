@@ -20,11 +20,14 @@
 				<div class="side-bar twin">
 				</div>
 				<div class="go-to">
-					<p>Читач Alex</p>
+					<p th:text="|#{title.reader} ${#authentication.getPrincipal().getName()}|"></p>
 					<div class="registration-info">
-						<p><span>Ім'я:</span><span> Alex</span></p>
-						<p><span>Прізвище:</span><span> Mulyk</span></p>
-						<p><span>Роль:</span><span> читач</span></p>
+						<p><span th:text="|#{title.name} : |">Ім'я:</span><span
+								th:text="${#authentication.getPrincipal().getName()}"> Alex</span></p>
+						<p><span th:text="|#{title.surname} : |">Прізвище:</span><span
+								th:text="${#authentication.getPrincipal().getSurname()}"> Mulyk</span></p>
+						<p><span th:text="|#{title.role} : |">Роль:</span><span th:text="#{title.reader}"> читач
+						</span></p>
 					</div>
 				</div>
 				<div class="side-bar right">

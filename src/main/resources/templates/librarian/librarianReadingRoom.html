@@ -1,0 +1,69 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800;900&family=Vollkorn:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link th:replace="/common/fragments :: css">
+  <link th:replace="/common/fragments :: image"/>
+</head>
+<body class="body">
+<div th:replace="common/fragments :: header"></div>
+<section class="content">
+  <div class="container">
+    <div class="books-wrap">
+      <div th:replace="librarian/side-bar :: side-bar"></div>
+      <div class="go-to">
+        <p th:text="#{title.orders}"></p>
+          <div class="accordion-btns" style="width: 100%; justify-content: end;"
+               th:if="${readingRoomPage.getSize() > 1}">
+            <button type="submit" form="form2" name="action"
+                    value="returnAll" th:text="#{button.return.all}"></button>
+          </div>
+
+
+        <div class="books-list">
+            <div class="book-info" th:each="readingRoomUnit : ${readingRoomPage}">
+              <div class="accordion">
+                <p th:text="${readingRoomUnit.getBook().getName()}"></p>
+                <div class="accordion-btns">
+                  <form id="form2" th:action="@{/librarian/readingRoom}" method="post">
+                    <input type="hidden" name="userId" th:value="${readingRoomUnit.getUser().getId()}">
+                    <input type="hidden" name="bookId" th:value="${readingRoomUnit.getBook().getId()}">
+                    <button type="submit" name="action"
+                            value="returnOne" th:text="#{status.returned}"></button>
+                  </form>
+                </div>
+              </div>
+              <div class="panel">
+                <p th:text="|#{title.ordered.by } ${readingRoomUnit.user.name} ${readingRoomUnit.user.surname}|">
+                </p>
+              </div>
+            </div>
+
+        </div>
+        <form class="pagination" id="form1" method="get" action="/librarian/readingRoomPage">
+
+          <button th:if="${readingRoomPage.totalPages!=1 && !readingRoomPage.isFirst()}"
+                  form="form1"
+                  type="submit" name="pageNumber" value="0" th:text="#{button.first}"> TEXT </button>
+          <button th:if="${readingRoomPage.hasPrevious()}" type="submit" name="pageNumber" form="form1"
+                  th:value="${readingRoomPage.previousPageable().getPageNumber()}" th:text="#{button.left}">
+            TEXT</button>
+          <button th:if="${readingRoomPage.hasNext()}" type="submit" name="pageNumber" form="form1"
+                  th:value="${readingRoomPage.nextPageable().getPageNumber()}" th:text="#{button.right}">TEXT
+          </button>
+          <button th:if="${readingRoomPage.totalPages!=1 && !readingRoomPage.isLast()}"
+                  type="submit" name="pageNumber" form="form1"
+                  th:value="${readingRoomPage.totalPages - 1}" th:text="#{button.last}" >TEXT</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<div th:replace="common/fragments :: footer"></div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

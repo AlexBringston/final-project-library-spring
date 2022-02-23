@@ -21,22 +21,30 @@
 				<div th:replace="librarian/side-bar :: side-bar"></div>
 				<div class="go-to give log">
 					<div class="give-form">
-						<p>Видача на абонемент</p>
+						<p th:text="#{title.abonnement}">Видача на абонемент</p>
 						<div class="give-info">
-							<p>Книга: "Шестірка воронів"</p>
-							<p>Читач: "Олексій Копійка"</p>
+							<p th:text="|#{title.book} : ${request.getBook().getName()}|">Книга: "Шестірка воронів"</p>
+							<p th:text="|#{title.ordered.by} : ${request.getUser().getName()} ${request.getUser().getSurname()}|">Читач:
+								"Олексій Копійка"</p>
 						</div>
-						<div class="authorize-form reg give">
-							<label for="date">Введіть дату повернення книги:</label>
-							<input id="date" type="date">
-							<label for="penalty">Введіть суму штрафу:</label>
-							<input id="penalty" type="number" min="0">
-							<input type="submit" value="Видати">
-						</div>
+						<form class="authorize-form reg give" method="post" action="/librarian/addOrderToAbonnement"
+							  th:object="${abonnement}">
+							<input type="hidden" name="user.id" th:value="${request.getUser().getId()}">
+							<input type="hidden" name="book.id" th:value="${request.getBook().getId()}">
+							<input type="hidden" name="requestId" th:value="${request.getId()}">
+							<label for="reg-date" th:text="|#{placeholder.enter.return.date} : |">Введіть дату
+								повернення
+								книги:</label>
+							<input id="reg-date" type="date" name="returnDate">
+							<label for="penalty" th:text="|#{placeholder.enter.penalty} : |">Введіть суму
+								штрафу:</label>
+							<input id="penalty" type="number" min="0" name="penalty">
+							<input type="submit" th:value="#{button.issue}">
+						</form>
 					</div>
 					<div class="error-p">
-						<p><span>Помилка: </span>введено невірний пароль</p>
-						<p><span>Помилка: </span>введено невірний пароль</p>
+<!--						<p><span>Помилка: </span>введено невірний пароль</p>-->
+<!--						<p><span>Помилка: </span>введено невірний пароль</p>-->
 					</div>
 				</div>
 			</div>
