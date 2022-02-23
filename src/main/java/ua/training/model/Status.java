@@ -3,7 +3,6 @@ package ua.training.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,10 +11,10 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
 @Data
-@Entity(name = "roles")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Role implements GrantedAuthority {
+@Entity(name = "statuses")
+public class Status {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +22,4 @@ public class Role implements GrantedAuthority {
 
     @NotBlank(message = "Name is mandatory")
     private String name;
-
-    @Override
-    public String getAuthority() {
-        return getName();
-    }
 }

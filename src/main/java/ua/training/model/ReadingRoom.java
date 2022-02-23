@@ -1,6 +1,7 @@
 package ua.training.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity(name = "reading_room")
 public class ReadingRoom {
 
@@ -23,4 +25,8 @@ public class ReadingRoom {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "status_id", nullable = false)
+    private Status status;
 }

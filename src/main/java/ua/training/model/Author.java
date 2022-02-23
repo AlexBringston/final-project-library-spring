@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Data
 @AllArgsConstructor
@@ -19,11 +22,4 @@ public class Author {
     private String name;
     private String surname;
 
-    //todo delete
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(
-//            name = "authors_books",
-//            joinColumns = @JoinColumn(name = "author_id"),
-//            inverseJoinColumns = @JoinColumn(name = "book_id"))
-//    private Set<Book> books;
 }

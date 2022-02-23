@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Data
 @AllArgsConstructor
@@ -25,4 +26,8 @@ public class Request {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "status_id", nullable = false)
+    private Status status;
 }
