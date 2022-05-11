@@ -33,6 +33,12 @@ public class BaseController {
         this.userService = userService;
     }
 
+    /**
+     * Method for retrieving a main page, which contains a catalog of books, available in library
+     * @param bookSearchDTO - DTO used for sorting and pagination
+     * @param model - Spring model to pass data to a view
+     * @return - index page's view with a catalog
+     */
     @GetMapping("/")
     public String getIndexPage(@ModelAttribute("bookSearchDTO") BookSearchDTO bookSearchDTO,
                                Model model) {
@@ -41,6 +47,10 @@ public class BaseController {
         return "index";
     }
 
+    /**
+     * Method for retrieving a login page
+     * @return - login view, if user is not logged, redirect to index page otherwise
+     */
     @GetMapping("/login")
     public String getLoginPage() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -50,6 +60,11 @@ public class BaseController {
         return "redirect:/";
     }
 
+    /**
+     * Method for retrieving a registration page
+     * @param model - Spring model to pass a user object which will collect the data from form
+     * @return - registration view, if user is not logged, redirect to index view otherwise
+     */
     @GetMapping("/register")
     public String getRegistrationPage(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -60,6 +75,12 @@ public class BaseController {
         return "redirect:/";
     }
 
+    /**
+     * Method which collects data from registration form, validates and saves user to database
+     * @param user - user object with data binded from form fields to appropriate class fields
+     * @param bindingResult - Spring binding result object, which stores validation errors
+     * @return - registration view if errors were found, redirect to login page otherwise
+     */
     @PostMapping("/register")
     public String registerNewUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -70,6 +91,10 @@ public class BaseController {
         return "redirect:/login";
     }
 
+    /**
+     * Method which retrieves user role and redirects them to the corresponding page of their cabinet
+     * @return - redirect to the correct role page, or to the index page, if user is not logged
+     */
     @GetMapping("/account")
     public String getCabinet() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -88,12 +113,23 @@ public class BaseController {
         }
     }
 
+    /**
+     * Method which retrieves a message page, with text received as a model attribute
+     * @param message - message to display
+     * @param model - Spring model to pass a message to the view
+     * @return - message view
+     */
     @GetMapping("/messagePage")
     public String getMessagePage(@ModelAttribute("message") String message, Model model) {
         model.addAttribute("message", message);
         return "message";
     }
 
+    /**
+     * Method which is used to return default DTO (with parameters of sorting and page number) if no other was provided
+     * before
+     * @return - new instance of BookSearchDTO
+     */
     @ModelAttribute
     public BookSearchDTO bookSearchDTO() {
         return new BookSearchDTO();

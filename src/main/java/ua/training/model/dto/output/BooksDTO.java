@@ -9,6 +9,9 @@ import ua.training.model.Book;
 
 import java.util.List;
 
+/**
+ * Data transfer object used to store data which doesn't belong to the sole entity
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

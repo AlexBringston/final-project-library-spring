@@ -16,6 +16,9 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * Entity used to store data from corresponding table in database
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

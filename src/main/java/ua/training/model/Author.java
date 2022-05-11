@@ -9,6 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * Entity used to store data from corresponding table in database
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

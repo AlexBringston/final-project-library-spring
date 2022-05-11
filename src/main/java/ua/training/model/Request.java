@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+/**
+ * Entity used to store data from corresponding table in database
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -10,6 +10,9 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import java.util.Locale;
 
+/**
+ * Config class for localization
+ */
 @Configuration
 public class LocaleConfig implements WebMvcConfigurer {
 

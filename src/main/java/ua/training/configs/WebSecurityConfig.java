@@ -12,6 +12,9 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import ua.training.handlers.CustomAuthenticationSuccessHandler;
 import ua.training.services.UserService;
 
+/**
+ * Config class for Spring Security
+ */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {

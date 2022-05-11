@@ -33,7 +33,7 @@
 									th:text="#{sort.field.name}">Назва
 							</option>
 							<option th:selected="${bookSearchDTO.getSortField().equals('mainAuthor.surname')}"
-									value="mainAuthor.surname" th:text="#{sort.field.name}">Автор
+									value="mainAuthor.surname" th:text="#{sort.field.author}">Автор
 							</option>
 							<option th:selected="${bookSearchDTO.getSortField().equals('publisher.name')}"
 									value="publisher.name" th:text="#{sort.field.publisher}">

@@ -13,6 +13,9 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Set;
 
+/**
+ * Entity used to store data from corresponding table in database
+ */
 @Entity(name = "books")
 @Data
 @NoArgsConstructor

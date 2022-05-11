@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * Entity used to store data from corresponding table in database
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -31,14 +31,32 @@ import java.util.stream.Collectors;
 @Service
 public class UserService implements UserDetailsService {
 
+    /**
+     * User repository instance
+     */
     private final UserRepository userRepository;
 
+    /**
+     * Book repository instance
+     */
     private final BookRepository bookRepository;
 
+    /**
+     * Role repository instance
+     */
     private final RoleRepository roleRepository;
 
+    /**
+     * PasswordEncoder instance used to hash password
+     */
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    /**
+     * Constructor used
+     * @param userRepository - UserRepository instance
+     * @param roleRepository - RoleRepository instance
+     * @param bookRepository - BookRepository instance
+     */
     @Autowired
     public UserService(UserRepository userRepository, RoleRepository roleRepository, BookRepository bookRepository) {
         this.userRepository = userRepository;
@@ -46,7 +64,12 @@ public class UserService implements UserDetailsService {
         this.bookRepository = bookRepository;
     }
 
-
+    /**
+     * Method used to find a user by given username
+     * @param username - username of user who is being searched
+     * @return - User instance
+     * @throws UsernameNotFoundException - if no user with such username was found
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("Loading a user with given username");
@@ -54,6 +77,12 @@ public class UserService implements UserDetailsService {
                 "given username was not found"));
     }
 
+    /**
+     * Method used to register a new user with hashed password
+     * @param user - user instance with data
+     * @param role - role instance with info about user's role
+     * @return - created user instance
+     */
     public User registerNewUser(User user, String role) {
         log.info("Creating a user with role: " + role);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -61,6 +90,11 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
+    /**
+     * Method used to remove librarian role from user with given id
+     * @param userId - id of user
+     * @return - updated user instance
+     */
     @Transactional
     public User removeLibrarianRole(Long userId) {
         log.info("Removing librarian role from user");
@@ -69,6 +103,11 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
+    /**
+     * Method used to find users ordered by their surname
+     * @param searchUserDTO - DTO used to implement pagination
+     * @return - Page object with list of users that were found
+     */
     public UserDTO findUsersOrderedByName(SearchUserDTO searchUserDTO) {
         Page<User> usersBySurname = userRepository.findAll(PageRequest.of(searchUserDTO.getPageNumber(),
                 Constants.NUMBER_OF_ITEMS_PER_PAGE,
@@ -77,6 +116,11 @@ public class UserService implements UserDetailsService {
                 countBooksInUsersAbonnements(usersBySurname));
     }
 
+    /**
+     * Method used to get a list of users' ages
+     * @param users - list of users on current page
+     * @return - list of ages of users
+     */
     private List<Integer> findUsersAges(Page<User> users) {
         log.info("Counting ages of each user is a list");
         return users.stream()
@@ -84,6 +128,11 @@ public class UserService implements UserDetailsService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Method used to count how many books were taken by each user in list
+     * @param users - list of users on current page
+     * @return - list of integers which correspond to the number of books that were taken by the particular user
+     */
     private List<Integer> countBooksInUsersAbonnements(Page<User> users) {
         log.info("Counting books taken by each user in a list");
         return users.stream()
@@ -91,6 +140,10 @@ public class UserService implements UserDetailsService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Method used to retrieve current user logged in system
+     * @return - user instance
+     */
     public User getCurrentUser() {
         log.info("Retrieving current logged user info");
         Object principal = SecurityContextHolder
@@ -107,6 +160,12 @@ public class UserService implements UserDetailsService {
         return (User) loadUserByUsername(username);
     }
 
+    /**
+     * Method used to get a page of users by given role
+     * @param searchDTO - DTO used to implement pagination
+     * @param role - String with role name
+     * @return - page object with list of users
+     */
     public Page<User> getUsersByRolePerPage(AbstractSearchDTO searchDTO, String role) {
         log.info("Retrieving users for a current page");
         return userRepository.findAllByRole(roleRepository.findByName(role),
@@ -115,16 +174,26 @@ public class UserService implements UserDetailsService {
                         Sort.by(Sort.Direction.valueOf(searchDTO.getSortDirection()), searchDTO.getSortField())));
     }
 
+    /**
+     * Method used to find a user by id
+     * @param userId - id of user
+     * @return - found user instance or exception is thrown
+     */
     public User findUserById(Long userId) {
         log.info("Looking for a user with id: " + userId);
         return userRepository
                 .findById(userId
-                ).orElseThrow(RuntimeException::new);
+                ).orElseThrow(() -> new RuntimeException("User was not found"));
     }
 
-    public void updateUserStatus(String action, Long id) {
+    /**
+     * Method used to update user status (block or unblock)
+     * @param action - string which contains a name of the action to be performed
+     * @param userId - id of user
+     */
+    public void updateUserStatus(String action, Long userId) {
         log.info("Changing user status");
-        User user = userRepository.findById(id).orElseThrow(RuntimeException::new);
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User was not found"));
         if (action.equals("block")) {
             user.setAccountNonLocked(false);
         }

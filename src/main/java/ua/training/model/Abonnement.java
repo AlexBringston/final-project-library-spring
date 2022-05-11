@@ -10,6 +10,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
+/**
+ * Entity used to store data from corresponding table in database
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

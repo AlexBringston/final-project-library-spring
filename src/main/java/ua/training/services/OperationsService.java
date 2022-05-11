@@ -13,16 +13,37 @@ import java.util.List;
 @Service
 public class OperationsService {
 
+    /**
+     * Book service instance
+     */
     private final BookService bookService;
+
+    /**
+     * Order service instance
+     */
     private final OrderService orderService;
+
+    /**
+     * User service instance
+     */
     private final UserService userService;
 
+    /**
+     * Constructor used for dependency injection
+     * @param bookService - BookService instance
+     * @param orderService - OrderService instance
+     * @param userService - UserService instance
+     */
     public OperationsService(BookService bookService, OrderService orderService, UserService userService) {
         this.bookService = bookService;
         this.orderService = orderService;
         this.userService = userService;
     }
 
+    /**
+     * Method used to create order of book with given id
+     * @param bookId - id of ordered book
+     */
     @Transactional
     public void createOrderOnGivenBook(Long bookId) {
         User user = userService.getCurrentUser();
@@ -36,6 +57,11 @@ public class OperationsService {
         bookService.saveBook(book);
     }
 
+    /**
+     * Method used to create an abonnement entry with data received from request
+     * @param abonnement - abonnement instance with user id and book id
+     * @param requestId - id of request created by user with given id on book with given id
+     */
     @Transactional
     public void fillDataOfRequestToBeAddedToAbonnement(Abonnement abonnement, Long requestId) {
         User user = userService.findUserById(abonnement.getUser().getId());
@@ -51,6 +77,10 @@ public class OperationsService {
         bookService.saveBook(book);
     }
 
+    /**
+     * Method used to check if the book can be passed to reading book and creating an entry in reading room
+     * @param requestId - id of request
+     */
     @Transactional
     public void setupBookToBeGivenToReadingRoom(Long requestId) {
         Request request = orderService.findRequestById(requestId);
@@ -64,11 +94,22 @@ public class OperationsService {
         bookService.saveBook(book);
     }
 
+    /**
+     * Method used to get a page object with all abonnement entries of current user
+     * @param bookAbonnementDTO - DTO with data used to implement pagination
+     * @return - Page object with abonnement entries
+     */
     public Page<Abonnement> findCurrentUserAbonnement(BookAbonnementDTO bookAbonnementDTO) {
         User currentUser = userService.getCurrentUser();
         return orderService.findCurrentReaderAbonnement(currentUser, bookAbonnementDTO);
     }
 
+    /**
+     * Method used to remove one or all books from reading room
+     * @param action - String 'returnOne' or 'returnAll'
+     * @param userId - id of user in order
+     * @param bookId - id of book in order
+     */
     public void removeRequestedBooks(String action, Long userId, Long bookId) {
         if (action.equals("returnOne")) {
             log.info("Return one book with id: " + bookId + " from a reading room");
@@ -80,6 +121,9 @@ public class OperationsService {
         }
     }
 
+    /**
+     * Method used to remove all books that are currently in reading room
+     */
     @Transactional
     public void removeAllBooksCurrentlyInReadingRoom() {
         List<ReadingRoom> readingRoomList = orderService.getAllByStatus("status.handed.over");
@@ -92,6 +136,11 @@ public class OperationsService {
         }
     }
 
+    /**
+     * Method used to remove an entry from reading room
+     * @param userId - id of user in entry
+     * @param bookId - id of book in entry
+     */
     @Transactional
     public void removeTakenBookFromReadingRoom(Long userId, Long bookId) {
         ReadingRoom readingRoom = orderService.getReadingRoomByUserIdAndBookId(userId, bookId);
@@ -101,6 +150,10 @@ public class OperationsService {
         bookService.saveBook(book);
     }
 
+    /**
+     * Method used to reject request of user
+     * @param requestId - id of request to be rejected
+     */
     @Transactional
     public void rejectRequestOfUser(Long requestId) {
         log.info("Request with id: " + requestId + " is being rejected");
